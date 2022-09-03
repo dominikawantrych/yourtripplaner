@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "596720254163",
+    "project_id": "yourtripplaner-1892e",
+    "storage_bucket": "yourtripplaner-1892e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:596720254163:android:04a7d28167d0fa0df62826",
+        "android_client_info": {
+          "package_name": "com.dominikawantrych.yourtripplaner"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "596720254163-bc2ip7hgd62ri5rbn12f00jnnibu9gh8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDBfcXLNtgLqVIRE3CiuQkEpnvAfu9nmQQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "596720254163-bc2ip7hgd62ri5rbn12f00jnnibu9gh8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
