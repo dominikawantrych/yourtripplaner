@@ -14,7 +14,7 @@ class HomeCubit extends Cubit<HomeState> {
           isLoading: false,
         ));
 
-        StreamSubscription? _streamSubscription;
+  StreamSubscription? _streamSubscription;
 
   Future<void> start() async {
     emit(const HomeState(
@@ -22,7 +22,10 @@ class HomeCubit extends Cubit<HomeState> {
       errorMessage: '',
       isLoading: true,
     ));
-    _streamSubscription = FirebaseFirestore.instance.collection('trip').snapshots().listen((data) {
+    _streamSubscription = FirebaseFirestore.instance
+        .collection('trip')
+        .snapshots()
+        .listen((data) {
       emit(
         HomeState(
           documents: data.docs,
@@ -30,15 +33,18 @@ class HomeCubit extends Cubit<HomeState> {
           errorMessage: '',
         ),
       );
-      
-    })..onError((error) {
-      emit(HomeState(
-          documents: const [],
-          isLoading: false,
-          errorMessage: error.toString(),
-        ),);
-    });
+    })
+      ..onError((error) {
+        emit(
+          HomeState(
+            documents: const [],
+            isLoading: false,
+            errorMessage: error.toString(),
+          ),
+        );
+      });
   }
+
   @override
   Future<void> close() {
     _streamSubscription?.cancel();

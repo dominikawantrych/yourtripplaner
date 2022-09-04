@@ -1,6 +1,5 @@
-
 import 'package:firebase_core/firebase_core.dart';
-import 'package:yourtripplaner/home/page/home_page.dart';
+import 'package:yourtripplaner/Features/home/page/home_page.dart';
 import 'firebase_options.dart';
 import 'package:flutter/material.dart';
 
@@ -26,5 +25,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-
-
