@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:yourtripplaner/home/cubit/home_cubit.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({
@@ -10,43 +12,46 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Plan Your Trip'),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-        child: const Icon(Icons.add),
-      ),
-      body: StreamBuilder<QuerySnapshot>(
-          stream: FirebaseFirestore.instance.collection('trip').snapshots(),
-          builder: (context, snapshot) {
-            if (snapshot.hasError) {
-              return const Text('Problem has occured');
-            }
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Text('Loading');
-            }
+        appBar: AppBar(
+          title: const Text('Plan Your Trip'),
+        ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {},
+          child: const Icon(Icons.add),
+        ),
+        body: BlocProvider(
+            create: (context) => HomeCubit()..start(),
+            child: BlocBuilder<HomeCubit, HomeState>(builder: (context, state) {
+              if (state.errorMessage.isNotEmpty) {
+                return Text(
+                  'Problem has occured: ${state.errorMessage}',
+                );
+              }
+              if (state.isLoading) {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
 
-            final documents = snapshot.data!.docs;
+              final documents = state.documents;
 
-            return ListView(
-              children: [
-                for (final document in documents) ...[
-                  Dismissible(
-                    key: ValueKey(document.id),
-                    onDismissed: (_) {
-                      FirebaseFirestore.instance
-                          .collection('trip')
-                          .doc(document.id)
-                          .delete();
-                    },
-                    child: ListViewItem(document['title']),
-                  ),
+              return ListView(
+                children: [
+                  for (final document in documents) ...[
+                    Dismissible(
+                      key: ValueKey(document.id),
+                      onDismissed: (_) {
+                        FirebaseFirestore.instance
+                            .collection('trip')
+                            .doc(document.id)
+                            .delete();
+                      },
+                      child: ListViewItem(document['title']),
+                    ),
+                  ],
                 ],
-              ],
-            );
-          }),
-    );
+              );
+            })));
   }
 }
 
