@@ -8,41 +8,38 @@ part 'home_state.dart';
 
 class HomeCubit extends Cubit<HomeState> {
   HomeCubit()
-      : super(const HomeState(
-          documents: [],
-          errorMessage: '',
-          isLoading: false,
-        ));
+      : super(const HomeState());
 
   StreamSubscription? _streamSubscription;
 
   Future<void> start() async {
-    emit(const HomeState(
-      documents: [],
-      errorMessage: '',
-      isLoading: true,
-    ));
+    
     _streamSubscription = FirebaseFirestore.instance
         .collection('trip')
+        .orderBy('date')
         .snapshots()
-        .listen((data) {
+        .listen((items) {
       emit(
         HomeState(
-          documents: data.docs,
-          isLoading: false,
-          errorMessage: '',
+          items: items
+         
         ),
       );
     })
       ..onError((error) {
         emit(
-          HomeState(
-            documents: const [],
-            isLoading: false,
-            errorMessage: error.toString(),
+          const HomeState(
+            loadingErrorOccured: true
           ),
         );
       });
+  }
+  Future<void> remove({required String documentID}) async {
+    try {
+      await FirebaseFirestore.instance.collection('trip').doc(documentID).delete();
+    } catch (error) {
+      emit(const HomeState(removingErrorOccured: true,));start();
+    }
   }
 
   @override

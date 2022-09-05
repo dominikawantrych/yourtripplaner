@@ -22,31 +22,42 @@ class HomePage extends StatelessWidget {
         body: BlocProvider(
             create: (context) => HomeCubit()..start(),
             child: BlocBuilder<HomeCubit, HomeState>(builder: (context, state) {
-              if (state.errorMessage.isNotEmpty) {
-                return Text(
-                  'Problem has occured: ${state.errorMessage}',
-                );
+              final docs = state.items?.docs;
+              if (docs == null) {
+                return const SizedBox.shrink();
               }
-              if (state.isLoading) {
+              if (state.loadingErrorOccured) {
                 return const Center(
                   child: CircularProgressIndicator(),
                 );
               }
 
-              final documents = state.documents;
-
               return ListView(
+                padding: const EdgeInsets.symmetric(vertical: 20),
                 children: [
-                  for (final document in documents) ...[
+                  for (final doc in docs) ...[
                     Dismissible(
-                      key: ValueKey(document.id),
-                      onDismissed: (_) {
-                        FirebaseFirestore.instance
-                            .collection('trip')
-                            .doc(document.id)
-                            .delete();
+                      key: ValueKey(doc.id),
+                      background: const DecoratedBox(
+                        decoration: BoxDecoration(
+                          color: Colors.red,
+                        ),
+                        child: Align(
+                            alignment: Alignment.centerRight,
+                            child: Padding(
+                              padding: EdgeInsets.only(right: 32),
+                              child: Icon(
+                                Icons.delete,
+                              ),
+                            )),
+                      ),
+                      confirmDismiss: (direction) async {
+                        return direction == DismissDirection.endToStart;
                       },
-                      child: ListViewItem(document['title']),
+                      onDismissed: (direction) {
+                        context.read<HomeCubit>().remove(documentID: doc.id);
+                      },
+                      child: ListViewItem(document: doc),
                     ),
                   ],
                 ],
@@ -56,20 +67,86 @@ class HomePage extends StatelessWidget {
 }
 
 class ListViewItem extends StatelessWidget {
-  const ListViewItem(
-    this.title, {
+  const ListViewItem({
     Key? key,
+    required this.document,
   }) : super(key: key);
 
-  final String title;
+  final QueryDocumentSnapshot<Object?> document;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Colors.black12,
-      padding: const EdgeInsets.all(20),
-      margin: const EdgeInsets.all(10),
-      child: Text(title),
-    );
+    return Padding(
+        padding: const EdgeInsets.symmetric(
+          vertical: 10,
+          horizontal: 30,
+        ),
+        child: Container(
+            decoration: const BoxDecoration(
+              color: Colors.black12,
+            ),
+            child: Column(
+              children: [
+                Container(
+                  height: 80,
+                  decoration: BoxDecoration(
+                    color: Colors.black12,
+                    image: DecorationImage(
+                      image: NetworkImage(
+                        document['imageURL'],
+                      ),
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ),
+                Row(
+                  children: [
+                    Expanded(
+                      child: Container(
+                        margin: const EdgeInsets.all(10),
+                        padding: const EdgeInsets.all(10),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            Text(
+                              document['title'],
+                              style: const TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            const SizedBox(height: 10),
+                            Text(
+                              (document['date'] as Timestamp)
+                                  .toDate()
+                                  .toString(),
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                    Container(
+                      decoration: const BoxDecoration(
+                        color: Colors.white70,
+                      ),
+                      margin: const EdgeInsets.all(10),
+                      padding: const EdgeInsets.all(10),
+                      child: Column(
+                        children: const [
+                          Text(
+                            '0',
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          Text('days left'),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            )));
   }
 }
