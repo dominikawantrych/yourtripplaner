@@ -1,9 +1,8 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:yourtripplaner/Features/add/page/add_page.dart';
 import 'package:yourtripplaner/Features/home/cubit/home_cubit.dart';
+import 'package:yourtripplaner/Features/models/item_model.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({
@@ -26,8 +25,8 @@ class HomePage extends StatelessWidget {
         body: BlocProvider(
             create: (context) => HomeCubit()..start(),
             child: BlocBuilder<HomeCubit, HomeState>(builder: (context, state) {
-              final docs = state.items?.docs;
-              if (docs == null) {
+              final itemModels = state.items;
+              if (itemModels.isEmpty) {
                 return const SizedBox.shrink();
               }
               if (state.loadingErrorOccured) {
@@ -39,9 +38,9 @@ class HomePage extends StatelessWidget {
               return ListView(
                 padding: const EdgeInsets.symmetric(vertical: 20),
                 children: [
-                  for (final doc in docs) ...[
+                  for (final itemModel in itemModels) ...[
                     Dismissible(
-                      key: ValueKey(doc.id),
+                      key: ValueKey(itemModel.id),
                       background: const DecoratedBox(
                         decoration: BoxDecoration(
                           color: Colors.red,
@@ -59,9 +58,11 @@ class HomePage extends StatelessWidget {
                         return direction == DismissDirection.endToStart;
                       },
                       onDismissed: (direction) {
-                        context.read<HomeCubit>().remove(documentID: doc.id);
+                        context
+                            .read<HomeCubit>()
+                            .remove(documentID: itemModel.id);
                       },
-                      child: ListViewItem(document: doc),
+                      child: ListViewItem(itemModel: itemModel),
                     ),
                   ],
                 ],
@@ -73,10 +74,10 @@ class HomePage extends StatelessWidget {
 class ListViewItem extends StatelessWidget {
   const ListViewItem({
     Key? key,
-    required this.document,
+    required this.itemModel,
   }) : super(key: key);
 
-  final QueryDocumentSnapshot<Object?> document;
+  final ItemModel itemModel;
 
   @override
   Widget build(BuildContext context) {
@@ -97,7 +98,7 @@ class ListViewItem extends StatelessWidget {
                     color: Colors.black12,
                     image: DecorationImage(
                       image: NetworkImage(
-                        document['imageURL'],
+                        itemModel.imageURL,
                       ),
                       fit: BoxFit.cover,
                     ),
@@ -113,7 +114,7 @@ class ListViewItem extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
                             Text(
-                              document['title'],
+                              itemModel.title,
                               style: const TextStyle(
                                 fontSize: 20,
                                 fontWeight: FontWeight.bold,
@@ -121,9 +122,7 @@ class ListViewItem extends StatelessWidget {
                             ),
                             const SizedBox(height: 10),
                             Text(
-                              (document['date'] as Timestamp)
-                                  .toDate()
-                                  .toString(),
+                              itemModel.date.toString(),
                             )
                           ],
                         ),
