@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:yourtripplaner/Features/add/page/add_page.dart';
 import 'package:yourtripplaner/Features/home/cubit/home_cubit.dart';
 
 class HomePage extends StatelessWidget {
@@ -16,7 +17,10 @@ class HomePage extends StatelessWidget {
           title: const Text('Plan Your Trip'),
         ),
         floatingActionButton: FloatingActionButton(
-          onPressed: () {},
+          onPressed: () {
+            Navigator.of(context)
+                .push(MaterialPageRoute(builder: (context) => const AddPage()));
+          },
           child: const Icon(Icons.add),
         ),
         body: BlocProvider(
