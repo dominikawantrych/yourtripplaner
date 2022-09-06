@@ -15,51 +15,59 @@ class _AddPageState extends State<AddPage> {
   String? _imageURL;
   String? _title;
   DateTime? _date;
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => AddCubit(),
-      child: BlocBuilder<AddCubit, AddState>(
-        builder: (context, state) {
-          return Scaffold(
-            appBar: AppBar(
-              title: const Text('Add upcoming trip'),
-              actions: [
-                IconButton(
-                  onPressed:
-                      _imageURL == null || _title == null || _date == null
-                          ? null
-                          : () {
-                              context.read<AddCubit>().add(
-                                    _title!,
-                                    _imageURL!,
-                                    _date!,
-                                  );
-                            },
-                  icon: const Icon(Icons.check),
-                ),
-              ],
-            ),
-            body: AddPageBody(
-              onTitleChanged: (newValue) {
-                setState(() {
-                  _title = newValue;
-                });
-              },
-              onImageUrlChanged: (newValue) {
-                setState(() {
-                  _imageURL = newValue;
-                });
-              },
-              onDateChanged: (newValue) {
-                setState(() {
-                  _date = newValue;
-                });
-              },
-              selectedDateFormatted: _date?.toIso8601String(),
-            ),
-          );
+      child: BlocListener<AddCubit, AddState>(
+        listener: (context, state) {
+          if (state.saved) {
+            Navigator.of(context).pop();
+          }
         },
+        child: BlocBuilder<AddCubit, AddState>(
+          builder: (context, state) {
+            return Scaffold(
+              appBar: AppBar(
+                title: const Text('Add upcoming trip'),
+                actions: [
+                  IconButton(
+                    onPressed:
+                        _imageURL == null || _title == null || _date == null
+                            ? null
+                            : () {
+                                context.read<AddCubit>().add(
+                                      _title!,
+                                      _imageURL!,
+                                      _date!,
+                                    );
+                              },
+                    icon: const Icon(Icons.check),
+                  ),
+                ],
+              ),
+              body: AddPageBody(
+                onTitleChanged: (newValue) {
+                  setState(() {
+                    _title = newValue;
+                  });
+                },
+                onImageUrlChanged: (newValue) {
+                  setState(() {
+                    _imageURL = newValue;
+                  });
+                },
+                onDateChanged: (newValue) {
+                  setState(() {
+                    _date = newValue;
+                  });
+                },
+                selectedDateFormatted: _date?.toIso8601String(),
+              ),
+            );
+          },
+        ),
       ),
     );
   }
