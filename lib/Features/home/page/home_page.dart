@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:yourtripplaner/Features/add/page/add_page.dart';
 import 'package:yourtripplaner/Features/home/cubit/home_cubit.dart';
 import 'package:yourtripplaner/Features/models/item_model.dart';
+import 'package:yourtripplaner/repositories/items_repository.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({
@@ -23,7 +24,7 @@ class HomePage extends StatelessWidget {
           child: const Icon(Icons.add),
         ),
         body: BlocProvider(
-            create: (context) => HomeCubit()..start(),
+            create: (context) => HomeCubit(ItemsRepository())..start(),
             child: BlocBuilder<HomeCubit, HomeState>(builder: (context, state) {
               final itemModels = state.items;
               if (itemModels.isEmpty) {

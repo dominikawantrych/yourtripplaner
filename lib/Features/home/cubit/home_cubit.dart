@@ -1,32 +1,22 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+
 import 'package:yourtripplaner/Features/models/item_model.dart';
+import 'package:yourtripplaner/repositories/items_repository.dart';
 
 part 'home_state.dart';
 
 class HomeCubit extends Cubit<HomeState> {
-  HomeCubit() : super(const HomeState());
+  HomeCubit(this._itemsRepository) : super(const HomeState());
+  final ItemsRepository _itemsRepository;
 
   StreamSubscription? _streamSubscription;
 
   Future<void> start() async {
-    _streamSubscription = FirebaseFirestore.instance
-        .collection('trip')
-        .orderBy('date')
-        .snapshots()
-        .listen((items) {
-      final itemModels = items.docs.map((doc) {
-        return ItemModel(
-          id: doc.id,
-          title: doc['title'],
-          imageURL: doc['imageURL'],
-          date: (doc['date'] as Timestamp).toDate(),
-        );
-      }).toList();
+    _streamSubscription = _itemsRepository.getItemsStream().listen((items) {
       emit(
-        HomeState(items: itemModels),
+        HomeState(items: items),
       );
     })
       ..onError((error) {
@@ -38,10 +28,7 @@ class HomeCubit extends Cubit<HomeState> {
 
   Future<void> remove({required String documentID}) async {
     try {
-      await FirebaseFirestore.instance
-          .collection('trip')
-          .doc(documentID)
-          .delete();
+      await _itemsRepository.delete(id: documentID);
     } catch (error) {
       emit(const HomeState(
         removingErrorOccured: true,

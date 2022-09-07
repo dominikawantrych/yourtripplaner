@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:yourtripplaner/Features/add/cubit/add_cubit.dart';
+import 'package:yourtripplaner/repositories/items_repository.dart';
 
 class AddPage extends StatefulWidget {
   const AddPage({
@@ -19,7 +20,7 @@ class _AddPageState extends State<AddPage> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => AddCubit(),
+      create: (context) => AddCubit(ItemsRepository()),
       child: BlocListener<AddCubit, AddState>(
         listener: (context, state) {
           if (state.saved) {
