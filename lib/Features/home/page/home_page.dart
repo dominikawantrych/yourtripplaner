@@ -34,7 +34,7 @@ class HomePage extends StatelessWidget {
                 return const Center(
                   child: CircularProgressIndicator(),
                 );
-              }
+               }
 
               return ListView(
                 padding: const EdgeInsets.symmetric(vertical: 20),

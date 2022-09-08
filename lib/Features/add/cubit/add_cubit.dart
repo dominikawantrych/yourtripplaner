@@ -1,5 +1,5 @@
 import 'package:bloc/bloc.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+
 import 'package:yourtripplaner/repositories/items_repository.dart';
 
 part 'add_state.dart';
@@ -16,7 +16,7 @@ class AddCubit extends Cubit<AddState> {
   ) async {
     try {
       await _itemsRepository.add(title, imageURL, date);
-      
+
       emit(const AddState(saved: true));
     } catch (error) {
       emit(AddState(errorMessage: error.toString()));
