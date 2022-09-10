@@ -13,62 +13,82 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: const Text('Plan Your Trip'),
-        ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            Navigator.of(context)
-                .push(MaterialPageRoute(builder: (context) => const AddPage()));
-          },
-          child: const Icon(Icons.add),
-        ),
-        body: BlocProvider(
-            create: (context) => HomeCubit(ItemsRepository())..start(),
-            child: BlocBuilder<HomeCubit, HomeState>(builder: (context, state) {
-              final itemModels = state.items;
-              if (itemModels.isEmpty) {
-                return const SizedBox.shrink();
-              }
-              if (state.loadingErrorOccured) {
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
-               }
-
-              return ListView(
-                padding: const EdgeInsets.symmetric(vertical: 20),
-                children: [
-                  for (final itemModel in itemModels) ...[
-                    Dismissible(
-                      key: ValueKey(itemModel.id),
-                      background: const DecoratedBox(
-                        decoration: BoxDecoration(
-                          color: Colors.red,
-                        ),
-                        child: Align(
-                            alignment: Alignment.centerRight,
-                            child: Padding(
-                              padding: EdgeInsets.only(right: 32),
-                              child: Icon(
-                                Icons.delete,
-                              ),
-                            )),
-                      ),
-                      confirmDismiss: (direction) async {
-                        return direction == DismissDirection.endToStart;
-                      },
-                      onDismissed: (direction) {
-                        context
-                            .read<HomeCubit>()
-                            .remove(documentID: itemModel.id);
-                      },
-                      child: ListViewItem(itemModel: itemModel),
-                    ),
-                  ],
-                ],
+      appBar: AppBar(
+        title: const Text('Plan Your Trip'),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.of(context)
+              .push(MaterialPageRoute(builder: (context) => const AddPage()));
+        },
+        child: const Icon(Icons.add),
+      ),
+      body: BlocProvider(
+        create: (context) => HomeCubit(ItemsRepository())..start(),
+        child: BlocBuilder<HomeCubit, HomeState>(
+          builder: (context, state) {
+            final itemModels = state.items;
+            if (itemModels.isEmpty) {
+              return const SizedBox.shrink();
+            }
+            if (state.loadingErrorOccured) {
+              return const Center(
+                child: CircularProgressIndicator(),
               );
-            })));
+            }
+
+            return ListView(
+              padding: const EdgeInsets.symmetric(vertical: 20),
+              children: [
+                for (final itemModel in itemModels) ...[
+                  Dismissible(
+                    key: ValueKey(itemModel.id),
+                    background: const DecoratedBox(
+                      decoration: BoxDecoration(
+                        color: Colors.red,
+                      ),
+                      child: Align(
+                          alignment: Alignment.centerRight,
+                          child: Padding(
+                            padding: EdgeInsets.only(right: 32),
+                            child: Icon(
+                              Icons.delete,
+                            ),
+                          )),
+                    ),
+                    confirmDismiss: (direction) async {
+                      return direction == DismissDirection.endToStart;
+                    },
+                    onDismissed: (direction) {
+                      context
+                          .read<HomeCubit>()
+                          .remove(documentID: itemModel.id);
+                    },
+                    child: ListViewItem(itemModel: itemModel),
+                  ),
+                ],
+              ],
+            );
+          },
+        ),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.travel_explore),
+            label: 'Trips',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.sunny_snowing),
+            label: 'Weather',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.check_box),
+            label: 'To do',
+          ),
+        ],
+      ),
+    );
   }
 }
 
@@ -136,15 +156,15 @@ class ListViewItem extends StatelessWidget {
                       margin: const EdgeInsets.all(10),
                       padding: const EdgeInsets.all(10),
                       child: Column(
-                        children:  [
+                        children: [
                           Text(
-                           itemModel.daysLeft(),
+                            itemModel.daysLeft(),
                             style: const TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                         const Text('days left'),
+                          const Text('days left'),
                         ],
                       ),
                     ),
