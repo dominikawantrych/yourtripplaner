@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:yourtripplaner/Features/add/cubit/add_cubit.dart';
 import 'package:yourtripplaner/repositories/items_repository.dart';
 
@@ -72,7 +73,9 @@ class _AddPageState extends State<AddPage> {
                     _date = newValue;
                   });
                 },
-                selectedDateFormatted: _date?.toIso8601String(),
+                selectedDateFormatted: _date == null
+                    ? null
+                    : DateFormat.yMMMMEEEEd().format(_date!),
               ),
             );
           },
