@@ -17,7 +17,7 @@ class WeatherPage extends StatelessWidget {
       create: (context) => WeatherCubit(
         WeatherRepository(WeatherRemoteDataSource()),
       ),
-      child: BlocListener<WeatherCubit, WeatherState>(
+      child: BlocConsumer<WeatherCubit, WeatherState>(
         listener: (context, state) {
           if (state.status == Status.error) {
             final errorMessage = state.errorMessage ?? 'Unkown error';
@@ -27,30 +27,28 @@ class WeatherPage extends StatelessWidget {
             ));
           }
         },
-        child: BlocBuilder<WeatherCubit, WeatherState>(
-          builder: (context, state) {
-            final weatherModel = state.model;
-            return Scaffold(
-              body: Center(
-                child: Builder(builder: (context) {
-                  if (state.status == Status.loading) {
-                    return const Text('Loading');
-                  }
-                  return Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      if (weatherModel != null)
-                        _DisplayWeatherWidget(
-                          weatherModel: weatherModel,
-                        ),
-                      _SearchWidget(),
-                    ],
-                  );
-                }),
-              ),
-            );
-          },
-        ),
+        builder: (context, state) {
+          final weatherModel = state.model;
+          return Scaffold(
+            body: Center(
+              child: Builder(builder: (context) {
+                if (state.status == Status.loading) {
+                  return const Text('Loading');
+                }
+                return Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    if (weatherModel != null)
+                      _DisplayWeatherWidget(
+                        weatherModel: weatherModel,
+                      ),
+                    _SearchWidget(),
+                  ],
+                );
+              }),
+            ),
+          );
+        },
       ),
     );
   }
