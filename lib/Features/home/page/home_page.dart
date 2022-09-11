@@ -3,12 +3,21 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:yourtripplaner/Features/add/page/add_page.dart';
 import 'package:yourtripplaner/Features/home/cubit/home_cubit.dart';
 import 'package:yourtripplaner/Features/models/item_model.dart';
+import 'package:yourtripplaner/Features/weather/pages/weather_page.dart';
 import 'package:yourtripplaner/repositories/items_repository.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({
     Key? key,
   }) : super(key: key);
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  var currentIndex = 0; 
+  
 
   @override
   Widget build(BuildContext context) {
@@ -23,56 +32,73 @@ class HomePage extends StatelessWidget {
         },
         child: const Icon(Icons.add),
       ),
-      body: BlocProvider(
-        create: (context) => HomeCubit(ItemsRepository())..start(),
-        child: BlocBuilder<HomeCubit, HomeState>(
-          builder: (context, state) {
-            final itemModels = state.items;
-            if (itemModels.isEmpty) {
-              return const SizedBox.shrink();
-            }
-            if (state.loadingErrorOccured) {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            }
+      body: Builder(
+        builder: (context) {
+          if (currentIndex == 1) {
+            return const WeatherPage();
+          }
+          if (currentIndex == 0 ) {}
+          return BlocProvider(
+            create: (context) => HomeCubit(ItemsRepository())..start(),
+            child: BlocBuilder<HomeCubit, HomeState>(
+              builder: (context, state) {
+                final itemModels = state.items;
+                if (itemModels.isEmpty) {
+                  return const SizedBox.shrink();
+                }
+                if (state.loadingErrorOccured) {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
 
-            return ListView(
-              padding: const EdgeInsets.symmetric(vertical: 20),
-              children: [
-                for (final itemModel in itemModels) ...[
-                  Dismissible(
-                    key: ValueKey(itemModel.id),
-                    background: const DecoratedBox(
-                      decoration: BoxDecoration(
-                        color: Colors.red,
+                return ListView(
+                  padding: const EdgeInsets.symmetric(vertical: 20),
+                  children: [
+                    for (final itemModel in itemModels) ...[
+                      Dismissible(
+                        key: ValueKey(itemModel.id),
+                        background: const DecoratedBox(
+                          decoration: BoxDecoration(
+                            color: Colors.red,
+                          ),
+                          child: Align(
+                              alignment: Alignment.centerRight,
+                              child: Padding(
+                                padding: EdgeInsets.only(right: 32),
+                                child: Icon(
+                                  Icons.delete,
+                                ),
+                              )),
+                        ),
+                        confirmDismiss: (direction) async {
+                          return direction == DismissDirection.endToStart;
+                        },
+                        onDismissed: (direction) {
+                          context
+                              .read<HomeCubit>()
+                              .remove(documentID: itemModel.id);
+                        },
+                        child: ListViewItem(itemModel: itemModel),
                       ),
-                      child: Align(
-                          alignment: Alignment.centerRight,
-                          child: Padding(
-                            padding: EdgeInsets.only(right: 32),
-                            child: Icon(
-                              Icons.delete,
-                            ),
-                          )),
-                    ),
-                    confirmDismiss: (direction) async {
-                      return direction == DismissDirection.endToStart;
-                    },
-                    onDismissed: (direction) {
-                      context
-                          .read<HomeCubit>()
-                          .remove(documentID: itemModel.id);
-                    },
-                    child: ListViewItem(itemModel: itemModel),
-                  ),
-                ],
-              ],
-            );
-          },
-        ),
+                    ],
+                  ],
+                );
+              },
+            ),
+          );
+          
+        },
       ),
       bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
+        showSelectedLabels: false,
+        currentIndex: currentIndex,
+        onTap: (newIndex) {
+          setState(() {
+            currentIndex = newIndex;
+          });
+        },
         items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.travel_explore),
@@ -81,10 +107,6 @@ class HomePage extends StatelessWidget {
           BottomNavigationBarItem(
             icon: Icon(Icons.sunny_snowing),
             label: 'Weather',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.check_box),
-            label: 'To do',
           ),
         ],
       ),
@@ -173,4 +195,5 @@ class ListViewItem extends StatelessWidget {
               ],
             )));
   }
+  
 }

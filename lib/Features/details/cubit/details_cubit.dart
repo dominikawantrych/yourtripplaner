@@ -1,3 +1,5 @@
+// ignore_for_file: depend_on_referenced_packages
+
 import 'package:bloc/bloc.dart';
 import 'package:yourtripplaner/Features/models/item_model.dart';
 import 'package:yourtripplaner/repositories/items_repository.dart';
