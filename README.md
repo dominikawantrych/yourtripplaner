@@ -1,6 +1,6 @@
 # yourtripplaner
 
-A new Flutter project.
+All your upcoming trips in one place. 
 
 ## Getting Started
 
