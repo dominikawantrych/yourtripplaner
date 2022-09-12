@@ -1,4 +1,5 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:yourtripplaner/Features/home/page/home_page.dart';
 import 'firebase_options.dart';
 import 'package:flutter/material.dart';
@@ -19,10 +20,15 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.cyan,
+        splashColor: Colors.yellow,
+        textTheme: GoogleFonts.poppinsTextTheme(),
       ),
+      
       
       home: const HomePage(),
     );
   }
 }
+
+

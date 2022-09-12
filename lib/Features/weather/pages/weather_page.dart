@@ -110,6 +110,11 @@ class _DisplayWeatherWidget extends StatelessWidget {
               style: Theme.of(context).textTheme.headline2,
             ),
             const SizedBox(height: 60),
+            Text(
+              weatherModel.city,
+              style: Theme.of(context).textTheme.headline2,
+            ),
+            const SizedBox(height: 60),
           ],
         );
       },
