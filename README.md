@@ -1,6 +1,8 @@
 # yourtripplaner
 
-All your upcoming trips in one place. 
+All your upcoming trips in one place. Get ready for an adventure :)
+
+App in making, coming soon. 
 
 ## Getting Started
 
