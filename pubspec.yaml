@@ -41,6 +41,7 @@ dependencies:
   intl: ^0.17.0
   dio: ^4.0.6
   google_fonts: ^3.0.1
+  parent_child_checkbox: ^0.0.3
  
 
 dev_dependencies:

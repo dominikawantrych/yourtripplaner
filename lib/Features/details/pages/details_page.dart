@@ -1,130 +1,84 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:yourtripplaner/Features/details/cubit/details_cubit.dart';
-
-import 'package:yourtripplaner/Features/models/item_model.dart';
-import 'package:yourtripplaner/repositories/items_repository.dart';
 
 class DetailsPage extends StatelessWidget {
-  const DetailsPage({
+  DetailsPage({
     required this.id,
     Key? key,
   }) : super(key: key);
 
   final String id;
+  final controller = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: const Text('Plan Your Trip'),
-        ),
-        body: BlocProvider(
-            create: (context) =>
-                DetailsCubit(ItemsRepository())..getItemWithID(id),
-            child: BlocBuilder<DetailsCubit, DetailsState>(
-                builder: (context, state) {
-              final itemModel = state.itemModel;
-              if (itemModel == null) {
-                return const CircularProgressIndicator();
-              }
+      appBar: AppBar(
+        title: const Text('Things To Do'),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          FirebaseFirestore.instance.collection('todo').add({
+            'title': controller.text,
+          });
+          controller.clear();
+        },
+        child: const Icon(Icons.add),
+      ),
+      body: StreamBuilder<QuerySnapshot>(
+          stream: FirebaseFirestore.instance.collection('todo').snapshots(),
+          builder: (context, snapshot) {
+            if (snapshot.hasError) {
+              return const Text('Problem occured');
+            }
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const CircularProgressIndicator();
+            }
+            final documents = snapshot.data!.docs;
 
-              return ListView(
-                padding: const EdgeInsets.symmetric(vertical: 20),
-                children: [
-                  ListViewItem(itemModel: itemModel),
+            return ListView(
+              children: [
+                for (final document in documents) ...[
+                  Dismissible(
+                    key: ValueKey(document.id),
+                    onDismissed: (_) {
+                      FirebaseFirestore.instance
+                          .collection('todo')
+                          .doc(document.id)
+                          .delete();
+                    },
+                    child: CategoryWidget(
+                      document['title'],
+                    ),
+                  ),
                 ],
-              );
-            })));
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextField(
+                    controller: controller,
+                  ),
+                ),
+              ],
+            );
+          }),
+    );
   }
 }
 
-class ListViewItem extends StatelessWidget {
-  const ListViewItem({
+class CategoryWidget extends StatelessWidget {
+  const CategoryWidget(
+    this.title, {
     Key? key,
-    required this.itemModel,
   }) : super(key: key);
-
-  final ItemModel itemModel;
+  final String title;
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () {
-        Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => DetailsPage(id: itemModel.id),
-        ));
-      },
-      child: Padding(
-          padding: const EdgeInsets.symmetric(
-            vertical: 10,
-            horizontal: 30,
-          ),
-          child: Container(
-              decoration: const BoxDecoration(
-                color: Colors.black12,
-              ),
-              child: Column(
-                children: [
-                  Container(
-                    height: 80,
-                    decoration: BoxDecoration(
-                      color: Colors.black12,
-                      image: DecorationImage(
-                        image: NetworkImage(
-                          itemModel.imageURL,
-                        ),
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  ),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: Container(
-                          margin: const EdgeInsets.all(10),
-                          padding: const EdgeInsets.all(10),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.stretch,
-                            children: [
-                              Text(
-                                itemModel.title,
-                                style: const TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              const SizedBox(height: 10),
-                              Text(
-                                itemModel.dateFormatted(),
-                              )
-                            ],
-                          ),
-                        ),
-                      ),
-                      Container(
-                        decoration: const BoxDecoration(
-                          color: Colors.white70,
-                        ),
-                        margin: const EdgeInsets.all(10),
-                        padding: const EdgeInsets.all(10),
-                        child: Column(
-                          children: [
-                            Text(
-                              itemModel.daysLeft(),
-                              style: const TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            const Text('days left'),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ))),
+    return Container(
+      padding: const EdgeInsets.all(20),
+      margin: const EdgeInsets.all(10),
+      color: Colors.black12,
+      child: Text(title),
     );
   }
 }
