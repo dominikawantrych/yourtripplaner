@@ -1,18 +1,55 @@
 // ignore_for_file: depend_on_referenced_packages
 
+import 'dart:async';
+
 import 'package:bloc/bloc.dart';
-import 'package:yourtripplaner/Features/models/item_model.dart';
-import 'package:yourtripplaner/repositories/items_repository.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 part 'details_state.dart';
 
 class DetailsCubit extends Cubit<DetailsState> {
-  DetailsCubit(this._itemsRepository) : super(DetailsState(itemModel: null));
+  DetailsCubit()
+      : super(DetailsState(
+          docs: [],
+          errorMessage: '',
+          isLoading: false,
+        ));
 
-  final ItemsRepository _itemsRepository;
+  StreamSubscription? _streamSubscription;
 
-  Future<void> getItemWithID(String id) async {
-    final itemModel = await _itemsRepository.get(id: id);
-    emit(DetailsState(itemModel: itemModel));
+  Future<void> start() async {
+    emit(DetailsState(
+      docs: [],
+      errorMessage: '',
+      isLoading: true,
+    ));
+
+    _streamSubscription = FirebaseFirestore.instance
+        .collection('todo')
+        .snapshots()
+        .listen((data) {
+      emit(
+        DetailsState(
+          docs: data.docs,
+          isLoading: false,
+          errorMessage: '',
+        ),
+      );
+    })
+      ..onError((error) {
+        emit(
+          DetailsState(
+            docs: [],
+            isLoading: false,
+            errorMessage: '',
+          ),
+        );
+      });
+  }
+
+  @override
+  Future<void> close() {
+    _streamSubscription?.cancel();
+    return super.close();
   }
 }

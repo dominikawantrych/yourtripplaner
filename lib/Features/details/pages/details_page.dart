@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:yourtripplaner/Features/details/cubit/details_cubit.dart';
 
 class DetailsPage extends StatelessWidget {
   DetailsPage({
@@ -25,20 +27,21 @@ class DetailsPage extends StatelessWidget {
         },
         child: const Icon(Icons.add),
       ),
-      body: StreamBuilder<QuerySnapshot>(
-          stream: FirebaseFirestore.instance.collection('todo').snapshots(),
-          builder: (context, snapshot) {
-            if (snapshot.hasError) {
-              return const Text('Problem occured');
+      body: BlocProvider(
+        create: (context) => DetailsCubit()..start(),
+        child: BlocBuilder<DetailsCubit, DetailsState>(
+          builder: (context, state) {
+            if (state.errorMessage.isNotEmpty) {
+              return const Center(child: Text('Problem occured'));
             }
-            if (snapshot.connectionState == ConnectionState.waiting) {
+            if (state.isLoading) {
               return const CircularProgressIndicator();
             }
-            final documents = snapshot.data!.docs;
+            final document = state.docs;
 
             return ListView(
               children: [
-                for (final document in documents) ...[
+                for (final document in document) ...[
                   Dismissible(
                     key: ValueKey(document.id),
                     onDismissed: (_) {
@@ -60,7 +63,9 @@ class DetailsPage extends StatelessWidget {
                 ),
               ],
             );
-          }),
+          },
+        ),
+      ),
     );
   }
 }

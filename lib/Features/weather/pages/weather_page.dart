@@ -30,6 +30,8 @@ class WeatherPage extends StatelessWidget {
         builder: (context, state) {
           final weatherModel = state.model;
           return Scaffold(
+            
+            
             body: Center(
               child: Builder(builder: (context) {
                 if (state.status == Status.loading) {
