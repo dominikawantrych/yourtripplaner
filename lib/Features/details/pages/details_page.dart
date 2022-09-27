@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:ionicons/ionicons.dart';
 import 'package:yourtripplaner/Features/details/cubit/details_cubit.dart';
 
 class DetailsPage extends StatelessWidget {
@@ -16,7 +18,7 @@ class DetailsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-         automaticallyImplyLeading: false,
+        automaticallyImplyLeading: false,
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(
             bottom: Radius.circular(10),
@@ -65,6 +67,22 @@ class DetailsPage extends StatelessWidget {
                   padding: const EdgeInsets.all(8.0),
                   child: TextField(
                     controller: controller,
+                    style: GoogleFonts.montserrat(),
+                    decoration: const InputDecoration(
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(15.0)),
+                        borderSide: BorderSide(width: 2, color: Colors.black38),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(15.0)),
+                        borderSide: BorderSide(width: 2, color: Colors.black38),
+                      ),
+                      hintText: 'Book Flights',
+                      prefixIcon: Icon(
+                        Ionicons.today_outline,
+                        color: Colors.black38,
+                      ),
+                    ),
                   ),
                 ),
               ],
@@ -88,8 +106,26 @@ class CategoryWidget extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(20),
       margin: const EdgeInsets.all(10),
-      color: Colors.black12,
-      child: Text(title),
+      decoration: BoxDecoration(
+          color: Colors.black12,
+          borderRadius: BorderRadius.circular(15),
+          boxShadow: [
+            BoxShadow(
+                offset: const Offset(5, 5),
+                blurRadius: 6.0,
+                color: Colors.grey.shade400),
+            const BoxShadow(
+              offset: Offset(-5, -5),
+              blurRadius: 6.0,
+              color: Colors.black38,
+            )
+          ]),
+      child: Text(
+        title,
+        style: GoogleFonts.montserrat(
+          fontSize: 18,
+        ),
+      ),
     );
   }
 }
