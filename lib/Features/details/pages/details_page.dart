@@ -71,11 +71,13 @@ class DetailsPage extends StatelessWidget {
                     decoration: const InputDecoration(
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(15.0)),
-                        borderSide: BorderSide(width: 2, color: Colors.black38),
+                        borderSide: BorderSide(
+                            width: 2, color: Color.fromARGB(233, 56, 183, 186)),
                       ),
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(15.0)),
-                        borderSide: BorderSide(width: 2, color: Colors.black38),
+                        borderSide: BorderSide(
+                            width: 2, color: Color.fromARGB(233, 56, 183, 186)),
                       ),
                       hintText: 'Book Flights',
                       prefixIcon: Icon(
@@ -113,11 +115,11 @@ class CategoryWidget extends StatelessWidget {
             BoxShadow(
                 offset: const Offset(5, 5),
                 blurRadius: 6.0,
-                color: Colors.grey.shade400),
+                color: Colors.grey.shade200),
             const BoxShadow(
               offset: Offset(-5, -5),
               blurRadius: 6.0,
-              color: Colors.black38,
+              color: Color.fromARGB(233, 187, 250, 251),
             )
           ]),
       child: Text(
