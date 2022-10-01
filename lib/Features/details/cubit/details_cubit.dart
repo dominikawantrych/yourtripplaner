@@ -3,19 +3,22 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+
 import 'package:yourtripplaner/Features/models/details_model.dart';
 import 'package:yourtripplaner/app/core/enums.dart';
+import 'package:yourtripplaner/repositories/details_repository.dart';
 
 part 'details_state.dart';
 
 class DetailsCubit extends Cubit<DetailsState> {
-  DetailsCubit()
+  DetailsCubit(this._detailsRepository)
       : super(DetailsState(
           docs: [],
           errorMessage: '',
           status: Status.initial,
         ));
+
+        final DetailsRepository _detailsRepository;
 
   StreamSubscription? _streamSubscription;
 
@@ -26,16 +29,12 @@ class DetailsCubit extends Cubit<DetailsState> {
       status: Status.loading,
     ));
 
-    _streamSubscription = FirebaseFirestore.instance
-        .collection('todo')
-        .snapshots()
+    _streamSubscription = _detailsRepository.getDetailsStream()
         .listen((docs) {
-      final detailsModel = docs.docs.map((docs) {
-        return DetailsModel(id: docs['id'], title: docs['title']);
-      }).toList();
+      
       emit(
         DetailsState(
-          docs: detailsModel,
+          docs: docs,
           errorMessage: '',
           status: Status.success,
         ),
@@ -54,10 +53,7 @@ class DetailsCubit extends Cubit<DetailsState> {
 
   Future<void> remove({required String documentID}) async {
     try {
-      await FirebaseFirestore.instance
-          .collection('todo')
-          .doc(documentID)
-          .delete();
+      await _detailsRepository.delete(id: documentID);
     } catch (error) {
       emit(DetailsState(
         errorMessage: error.toString(),

@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:yourtripplaner/Features/details/cubit/details_cubit.dart';
 import 'package:yourtripplaner/app/core/enums.dart';
+import 'package:yourtripplaner/repositories/details_repository.dart';
 
 class DetailsPage extends StatelessWidget {
   DetailsPage({
@@ -18,7 +19,7 @@ class DetailsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => DetailsCubit(),
+      create: (context) => DetailsCubit(DetailsRepository()),
       child: BlocBuilder<DetailsCubit, DetailsState>(
         builder: (context, state) {
           return Scaffold(
@@ -33,7 +34,7 @@ class DetailsPage extends StatelessWidget {
             ),
             
             body: BlocProvider(
-              create: (context) => DetailsCubit()..start(),
+              create: (context) => DetailsCubit(DetailsRepository())..start(),
               child: BlocBuilder<DetailsCubit, DetailsState>(
                 builder: (context, state) {
                   switch (state.status) {
