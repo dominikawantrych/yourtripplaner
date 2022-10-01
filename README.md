@@ -10,7 +10,6 @@ App in making, coming soon.
 ![Screenshot 2022-09-12 at 19 06 14](https://user-images.githubusercontent.com/101131441/191331288-a72a25df-f1cb-4ac6-b34f-bd29c5550427.png)
 
 ![Screenshot 2022-10-01 at 16 35 07](https://user-images.githubusercontent.com/101131441/193414579-0aaec467-992b-4d98-b16b-b7ff35e2b083.png)
-
 ![Screenshot 2022-09-12 at 19 06 46](https://user-images.githubusercontent.com/101131441/190231007-efb4527a-19fb-4e74-affa-a82b74e4fdbd.png)
 
 
