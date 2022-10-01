@@ -2,12 +2,14 @@ part of 'details_cubit.dart';
 
 class DetailsState {
   DetailsState({
-    required this.docs,
+     this.docs = const [],
+    this.status = Status.initial,
+     required this.errorMessage,
     
-    required this.errorMessage,
-    required this.isLoading,
-  });
-  final  List<QueryDocumentSnapshot<Map<String, dynamic>>> docs;
-  final bool isLoading;
-  final String errorMessage;
+    }
+  );
+  final  List<DetailsModel> docs;
+  final Status status;
+ 
+  final String? errorMessage;
 }

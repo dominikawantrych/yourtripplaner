@@ -4,6 +4,8 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:yourtripplaner/Features/models/details_model.dart';
+import 'package:yourtripplaner/app/core/enums.dart';
 
 part 'details_state.dart';
 
@@ -12,7 +14,7 @@ class DetailsCubit extends Cubit<DetailsState> {
       : super(DetailsState(
           docs: [],
           errorMessage: '',
-          isLoading: false,
+          status: Status.initial,
         ));
 
   StreamSubscription? _streamSubscription;
@@ -21,18 +23,21 @@ class DetailsCubit extends Cubit<DetailsState> {
     emit(DetailsState(
       docs: [],
       errorMessage: '',
-      isLoading: true,
+      status: Status.loading,
     ));
 
     _streamSubscription = FirebaseFirestore.instance
         .collection('todo')
         .snapshots()
-        .listen((data) {
+        .listen((docs) {
+      final detailsModel = docs.docs.map((docs) {
+        return DetailsModel(id: docs['id'], title: docs['title']);
+      }).toList();
       emit(
         DetailsState(
-          docs: data.docs,
-          isLoading: false,
+          docs: detailsModel,
           errorMessage: '',
+          status: Status.success,
         ),
       );
     })
@@ -40,11 +45,25 @@ class DetailsCubit extends Cubit<DetailsState> {
         emit(
           DetailsState(
             docs: [],
-            isLoading: false,
-            errorMessage: '',
+            status: Status.error,
+            errorMessage: error.toString(),
           ),
         );
       });
+  }
+
+  Future<void> remove({required String documentID}) async {
+    try {
+      await FirebaseFirestore.instance
+          .collection('todo')
+          .doc(documentID)
+          .delete();
+    } catch (error) {
+      emit(DetailsState(
+        errorMessage: error.toString(),
+      ));
+      start();
+    }
   }
 
   @override

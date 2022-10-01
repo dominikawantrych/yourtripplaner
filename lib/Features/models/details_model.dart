@@ -1,6 +1,9 @@
 class DetailsModel {
+  DetailsModel({
+    required this.id,
+    required this.title,
+  });
+
   final String id;
   final String title;
-
-  DetailsModel(this.id, this.title);
 }

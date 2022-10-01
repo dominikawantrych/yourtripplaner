@@ -39,6 +39,8 @@ class HomeCubit extends Cubit<HomeState> {
     }
   }
 
+  
+
   @override
   Future<void> close() {
     _streamSubscription?.cancel();
