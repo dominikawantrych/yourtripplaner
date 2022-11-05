@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -24,15 +23,29 @@ class DetailsPage extends StatelessWidget {
         builder: (context, state) {
           return Scaffold(
             appBar: AppBar(
-              
+              flexibleSpace: Container(
+                decoration: const BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    colors: <Color>[
+                      Color.fromARGB(255, 38, 132, 221),
+                      Color.fromARGB(255, 69, 156, 237),
+                      Color.fromARGB(255, 83, 163, 238),
+                      Color.fromARGB(255, 137, 185, 231),
+                      Color.fromARGB(255, 145, 181, 214),
+                      Color.fromARGB(255, 198, 219, 238),
+                    ],
+                  ),
+                ),
+              ),
               shape: const RoundedRectangleBorder(
                 borderRadius: BorderRadius.vertical(
                   bottom: Radius.circular(10),
                 ),
               ),
-              title: const Text('Things To Do'),
+              title: const Text('To Do'),
             ),
-            
             body: BlocProvider(
               create: (context) => DetailsCubit(DetailsRepository())..start(),
               child: BlocBuilder<DetailsCubit, DetailsState>(
@@ -46,7 +59,8 @@ class DetailsPage extends StatelessWidget {
 
                     case Status.loading:
                       return const Center(
-                        child: CircularProgressIndicator(color: Colors.blue),
+                        child: CircularProgressIndicator(
+                            color: Color.fromARGB(255, 123, 183, 233)),
                       );
 
                     case Status.success:
@@ -58,7 +72,9 @@ class DetailsPage extends StatelessWidget {
                             Dismissible(
                               key: ValueKey(detailsModel.id),
                               onDismissed: (_) {
-                                context.read<DetailsCubit>().remove(documentID: detailsModel.id);
+                                context
+                                    .read<DetailsCubit>()
+                                    .remove(documentID: detailsModel.id);
                               },
                               child: CategoryWidget(
                                 detailsModel.title,
@@ -76,31 +92,28 @@ class DetailsPage extends StatelessWidget {
                                       BorderRadius.all(Radius.circular(15.0)),
                                   borderSide: BorderSide(
                                       width: 2,
-                                      color: Color.fromARGB(233, 56, 183, 186)),
+                                      color:
+                                          Color.fromARGB(233, 182, 217, 240)),
                                 ),
                                 focusedBorder: OutlineInputBorder(
                                   borderRadius:
-                                      BorderRadius.all(Radius.circular(15.0)),
+                                      BorderRadius.all(Radius.circular(10.0)),
                                   borderSide: BorderSide(
                                       width: 2,
-                                      color: Color.fromARGB(233, 56, 183, 186)),
+                                      color:
+                                          Color.fromARGB(233, 182, 217, 240)),
                                 ),
                                 hintText: 'Book Flights',
                                 prefixIcon: Icon(
                                   Ionicons.today_outline,
                                   color: Colors.black38,
                                 ),
-                                suffixIcon: IconButton(onPressed: () {
-                                  context.read<DetailsCubit>().add(title: controller.text);
-                                  controller.clear();
-                                }, icon:  icon(Icons.add, color: Colors.blue));
                               ),
                             ),
                           ),
                         ],
                       );
                   }
-                  
                 },
               ),
             ),
@@ -124,17 +137,17 @@ class CategoryWidget extends StatelessWidget {
       padding: const EdgeInsets.all(20),
       margin: const EdgeInsets.all(10),
       decoration: BoxDecoration(
-          color: Colors.black12,
+          color: const Color.fromARGB(31, 191, 208, 217),
           borderRadius: BorderRadius.circular(15),
-          boxShadow: [
+          boxShadow: const [
             BoxShadow(
-                offset: const Offset(5, 5),
-                blurRadius: 6.0,
-                color: Colors.grey.shade200),
-            const BoxShadow(
+                offset: Offset(0, 1),
+                blurRadius: 3.0,
+                color: Color.fromARGB(255, 238, 238, 238)),
+            BoxShadow(
               offset: Offset(-5, -5),
-              blurRadius: 6.0,
-              color: Color.fromARGB(233, 187, 250, 251),
+              blurRadius: 1.0,
+              color: Color.fromARGB(233, 214, 230, 246),
             )
           ]),
       child: Text(

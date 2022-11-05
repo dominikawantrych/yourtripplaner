@@ -18,7 +18,7 @@ class DetailsCubit extends Cubit<DetailsState> {
           status: Status.initial,
         ));
 
-        final DetailsRepository _detailsRepository;
+  final DetailsRepository _detailsRepository;
 
   StreamSubscription? _streamSubscription;
 
@@ -29,12 +29,11 @@ class DetailsCubit extends Cubit<DetailsState> {
       status: Status.loading,
     ));
 
-    _streamSubscription = _detailsRepository.getDetailsStream()
-        .listen((docs) {
-      
+    _streamSubscription = _detailsRepository.getDetailsStream().listen((docs) {
+      final detailsModels = docs;
       emit(
         DetailsState(
-          docs: docs,
+          docs: detailsModels,
           errorMessage: '',
           status: Status.success,
         ),
@@ -62,6 +61,7 @@ class DetailsCubit extends Cubit<DetailsState> {
     }
   }
 
+  
   @override
   Future<void> close() {
     _streamSubscription?.cancel();

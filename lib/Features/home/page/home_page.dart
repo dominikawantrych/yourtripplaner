@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:yourtripplaner/Features/add/page/add_page.dart';
 import 'package:yourtripplaner/Features/details/pages/details_page.dart';
 import 'package:yourtripplaner/Features/home/cubit/home_cubit.dart';
+
 import 'package:yourtripplaner/Features/models/item_model.dart';
 import 'package:yourtripplaner/Features/weather/pages/weather_page.dart';
 import 'package:yourtripplaner/repositories/items_repository.dart';
@@ -17,20 +18,35 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  var currentIndex = 0; 
-  
+  var currentIndex = 0;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-         automaticallyImplyLeading: false,
+        flexibleSpace: Container(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: <Color>[
+                Color.fromARGB(255, 38, 132, 221),
+                Color.fromARGB(255, 69, 156, 237),
+                Color.fromARGB(255, 83, 163, 238),
+                Color.fromARGB(255, 137, 185, 231),
+                Color.fromARGB(255, 145, 181, 214),
+                Color.fromARGB(255, 198, 219, 238),
+              ],
+            ),
+          ),
+        ),
+        automaticallyImplyLeading: false,
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(
             bottom: Radius.circular(10),
           ),
         ),
-        title: const Text('Plan Your Trip'),
+        title: const Text('Plan Your Trip '),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
@@ -44,7 +60,7 @@ class _HomePageState extends State<HomePage> {
           if (currentIndex == 1) {
             return const WeatherPage();
           }
-          if (currentIndex == 0 ) {}
+          if (currentIndex == 0) {}
           return BlocProvider(
             create: (context) => HomeCubit(ItemsRepository())..start(),
             child: BlocBuilder<HomeCubit, HomeState>(
@@ -86,7 +102,9 @@ class _HomePageState extends State<HomePage> {
                               .read<HomeCubit>()
                               .remove(documentID: itemModel.id);
                         },
-                        child: ListViewItem(itemModel: itemModel),
+                        child: ListViewItem(
+                          itemModel: itemModel,
+                        ),
                       ),
                     ],
                   ],
@@ -94,7 +112,6 @@ class _HomePageState extends State<HomePage> {
               },
             ),
           );
-          
         },
       ),
       bottomNavigationBar: BottomNavigationBar(
@@ -144,6 +161,9 @@ class ListViewItem extends StatelessWidget {
           ),
           child: Container(
               decoration: const BoxDecoration(
+                borderRadius: BorderRadius.all(
+                  Radius.circular(32),
+                ),
                 color: Colors.black12,
               ),
               child: Column(
@@ -151,6 +171,9 @@ class ListViewItem extends StatelessWidget {
                   Container(
                     height: 80,
                     decoration: BoxDecoration(
+                      borderRadius: const BorderRadius.all(
+                        Radius.circular(32),
+                      ),
                       color: Colors.black12,
                       image: DecorationImage(
                         image: NetworkImage(
@@ -209,5 +232,4 @@ class ListViewItem extends StatelessWidget {
               ))),
     );
   }
-  
 }

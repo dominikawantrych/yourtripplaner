@@ -40,12 +40,28 @@ class _AddPageState extends State<AddPage> {
           builder: (context, state) {
             return Scaffold(
               appBar: AppBar(
-                 automaticallyImplyLeading: false,
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(
-            bottom: Radius.circular(10),
-          ),
-        ),
+                flexibleSpace: Container(
+                  decoration: const BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                      colors: <Color>[
+                        Color.fromARGB(255, 38, 132, 221),
+                        Color.fromARGB(255, 69, 156, 237),
+                        Color.fromARGB(255, 83, 163, 238),
+                        Color.fromARGB(255, 137, 185, 231),
+                        Color.fromARGB(255, 145, 181, 214),
+                        Color.fromARGB(255, 198, 219, 238),
+                      ],
+                    ),
+                  ),
+                ),
+                automaticallyImplyLeading: false,
+                shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.vertical(
+                    bottom: Radius.circular(10),
+                  ),
+                ),
                 title: const Text('Add upcoming trip'),
                 actions: [
                   IconButton(
@@ -148,6 +164,7 @@ class AddPageBody extends StatelessWidget {
               onDateChanged(selectedDate);
             },
             child: Text(selectedDateFormatted ?? 'Choose trip date'),
+            
           ),
         ]);
   }
