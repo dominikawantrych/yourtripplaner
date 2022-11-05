@@ -30,8 +30,12 @@ class WeatherPage extends StatelessWidget {
         builder: (context, state) {
           final weatherModel = state.model;
           return Scaffold(
-            
-            
+            extendBodyBehindAppBar: true,
+            appBar: AppBar(
+              title: const Text(''),
+              backgroundColor: Colors.transparent,
+              elevation: 0,
+            ),
             body: Center(
               child: Builder(builder: (context) {
                 if (state.status == Status.loading) {
@@ -73,7 +77,16 @@ class _SearchWidget extends StatelessWidget {
               child: TextField(
             controller: _controller,
             decoration: const InputDecoration(
-              border: OutlineInputBorder(),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.all(Radius.circular(15.0)),
+                borderSide: BorderSide(
+                    width: 2, color: Color.fromARGB(233, 182, 217, 240)),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                borderSide: BorderSide(
+                    width: 2, color: Color.fromARGB(233, 182, 217, 240)),
+              ),
               label: Text('City'),
               hintText: 'London',
             ),
