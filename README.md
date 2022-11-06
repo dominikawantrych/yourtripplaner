@@ -2,27 +2,17 @@
 
 All your upcoming trips in one place. Get ready for an adventure :)
 
-App in making, coming soon. 
+App in making.
+
+![Screenshot 2022-10-02 at 11 57 58](https://user-images.githubusercontent.com/101131441/193448591-1fbc4937-8f5a-4401-8158-2acde4393920.png)
+![Screenshot 2022-10-02 at 11 58 25](https://user-images.githubusercontent.com/101131441/193448597-d1ce46e2-8e6c-4b3a-af7c-44cf42920b3d.png)
+![Screenshot 2022-10-02 at 11 59 10](https://user-images.githubusercontent.com/101131441/193448601-d3464247-e9b2-4c7a-9c01-d01983df5a0e.png)
+
+![Screenshot 2022-10-02 at 11 57 21](https://user-images.githubusercontent.com/101131441/193448604-92ccbd4f-509f-4414-b383-b99a7ce0703c.png)
+![Screenshot 2022-10-02 at 12 00 08](https://user-images.githubusercontent.com/101131441/193448608-dd72d0ad-fcc2-4307-a835-1669f80dfca9.png)
 
 
-![Screenshot 2022-09-12 at 19 05 23](https://user-images.githubusercontent.com/101131441/190230866-64dd5c53-4f11-42a5-ab64-ba791147c19e.png)
-![Screenshot 2022-09-12 at 19 05 46](https://user-images.githubusercontent.com/101131441/190230966-174e3b29-6916-4113-bf48-a1d468a6a796.png)
-![Screenshot 2022-09-12 at 19 06 14](https://user-images.githubusercontent.com/101131441/191331288-a72a25df-f1cb-4ac6-b34f-bd29c5550427.png)
 
 
-![Screenshot 2022-09-19 at 18 43 05](https://user-images.githubusercontent.com/101131441/191330991-6c1de860-9e50-41ac-8cd4-1471ed6fc217.png)
-![Screenshot 2022-09-12 at 19 06 46](https://user-images.githubusercontent.com/101131441/190231007-efb4527a-19fb-4e74-affa-a82b74e4fdbd.png)
 
 
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
