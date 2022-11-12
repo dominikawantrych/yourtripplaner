@@ -44,7 +44,7 @@ class DetailsPage extends StatelessWidget {
                   bottom: Radius.circular(10),
                 ),
               ),
-              title: const Text('To Do'),
+              title: const Text('TO DO'),
             ),
             body: BlocProvider(
               create: (context) => DetailsCubit(DetailsRepository())..start(),
@@ -108,8 +108,11 @@ class DetailsPage extends StatelessWidget {
                                   Ionicons.today_outline,
                                   color: Colors.black38,
                                 ),
+                                
                               ),
+                              
                             ),
+                
                           ),
                         ],
                       );

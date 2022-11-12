@@ -43,6 +43,8 @@ dependencies:
   google_fonts: ^3.0.1
   parent_child_checkbox: ^0.0.3
   ionicons: ^0.2.1
+  
+  flutter_svg: ^0.22.0
  
 
 dev_dependencies:

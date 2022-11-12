@@ -14,11 +14,11 @@ class WeatherPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => WeatherCubit(
-        WeatherRepository(WeatherRemoteDataSource()),
-      ),
-      child: BlocConsumer<WeatherCubit, WeatherState>(
-        listener: (context, state) {
+        create: (context) => WeatherCubit(
+              WeatherRepository(WeatherRemoteDataSource()),
+            ),
+        child: BlocConsumer<WeatherCubit, WeatherState>(
+            listener: (context, state) {
           if (state.status == Status.error) {
             final errorMessage = state.errorMessage ?? 'Unkown error';
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -26,8 +26,7 @@ class WeatherPage extends StatelessWidget {
               backgroundColor: Colors.red,
             ));
           }
-        },
-        builder: (context, state) {
+        }, builder: (context, state) {
           final weatherModel = state.model;
           return Scaffold(
             extendBodyBehindAppBar: true,
@@ -54,9 +53,7 @@ class WeatherPage extends StatelessWidget {
               }),
             ),
           );
-        },
-      ),
-    );
+        }));
   }
 }
 
@@ -77,17 +74,17 @@ class _SearchWidget extends StatelessWidget {
               child: TextField(
             controller: _controller,
             decoration: const InputDecoration(
-              enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.all(Radius.circular(15.0)),
-                borderSide: BorderSide(
-                    width: 2, color: Color.fromARGB(233, 182, 217, 240)),
-              ),
               focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                borderRadius: BorderRadius.all(
+                  Radius.circular(10.0),
+                ),
                 borderSide: BorderSide(
-                    width: 2, color: Color.fromARGB(233, 182, 217, 240)),
+                  width: 5,
+                  color: Color.fromARGB(255, 173, 27, 27),
+                ),
               ),
               label: Text('City'),
+              fillColor: Colors.blue,
               hintText: 'London',
             ),
           )),
