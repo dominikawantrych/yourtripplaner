@@ -6,6 +6,7 @@ import 'package:yourtripplaner/Features/home/cubit/home_cubit.dart';
 
 import 'package:yourtripplaner/Features/models/item_model.dart';
 import 'package:yourtripplaner/Features/weather/pages/weather_page.dart';
+import 'package:yourtripplaner/Features/wish_list/wish_list/wish_list.dart';
 import 'package:yourtripplaner/repositories/items_repository.dart';
 
 class HomePage extends StatefulWidget {
@@ -53,6 +54,9 @@ class _HomePageState extends State<HomePage> {
         builder: (context) {
           if (currentIndex == 1) {
             return const WeatherPage();
+          }
+          if (currentIndex == 2) {
+            return WishList();
           }
           if (currentIndex == 0) {}
           return BlocProvider(
@@ -125,6 +129,10 @@ class _HomePageState extends State<HomePage> {
           BottomNavigationBarItem(
             icon: Icon(Icons.sunny_snowing),
             label: 'Weather',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.list_alt),
+            label: 'Wish List',
           ),
         ],
       ),
