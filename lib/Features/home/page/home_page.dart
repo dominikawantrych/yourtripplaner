@@ -8,17 +8,13 @@ import 'package:yourtripplaner/Features/models/item_model.dart';
 
 import 'package:yourtripplaner/repositories/items_repository.dart';
 
-class HomePage extends StatefulWidget {
+class HomePage extends StatelessWidget {
   const HomePage({
     Key? key,
   }) : super(key: key);
 
-  @override
-  State<HomePage> createState() => _HomePageState();
-}
+ 
 
-class _HomePageState extends State<HomePage> {
-  var currentIndex = 0;
 
   @override
   Widget build(BuildContext context) {
