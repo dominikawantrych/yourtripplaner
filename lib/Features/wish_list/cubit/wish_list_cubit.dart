@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
 import 'package:yourtripplaner/Features/models/wish_model.dart';
 
@@ -28,9 +29,13 @@ class WishListCubit extends Cubit<WishListState> {
         .collection('wishList')
         .snapshots()
         .listen((data) {
-          final wishModels = data.docs.map((doc) {
-            return WishModel(id: doc.id, imageURL: doc['imageURL']);
-          }).toList();
+      final wishModels = data.docs.map((doc) {
+        return WishModel(
+          id: doc.id,
+          imageURL: doc['imageURL'],
+          title: doc['title'],
+        );
+      }).toList();
       emit(
         WishListState(
           documents: wishModels,
@@ -49,11 +54,13 @@ class WishListCubit extends Cubit<WishListState> {
         );
       });
   }
-  Future<void> add({required String imageURL}) async {
+
+  Future<void> add({required String imageURL, title}) async {
     try {
       await FirebaseFirestore.instance.collection('wishList').add(
         {
           'imageURL': imageURL,
+          'title' : title,
         },
       );
       emit(WishListState(

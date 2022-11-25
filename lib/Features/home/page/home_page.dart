@@ -5,8 +5,7 @@ import 'package:yourtripplaner/Features/details/pages/details_page.dart';
 import 'package:yourtripplaner/Features/home/cubit/home_cubit.dart';
 
 import 'package:yourtripplaner/Features/models/item_model.dart';
-import 'package:yourtripplaner/Features/weather/pages/weather_page.dart';
-import 'package:yourtripplaner/Features/wish_list/wish_list/wish_list.dart';
+
 import 'package:yourtripplaner/repositories/items_repository.dart';
 
 class HomePage extends StatefulWidget {
@@ -24,42 +23,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        flexibleSpace: Container(
-          decoration: const BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-              colors: <Color>[
-                Color.fromARGB(255, 38, 132, 221),
-                Color.fromARGB(255, 69, 156, 237),
-                Color.fromARGB(255, 83, 163, 238),
-                Color.fromARGB(255, 137, 185, 231),
-                Color.fromARGB(255, 145, 181, 214),
-                Color.fromARGB(255, 198, 219, 238),
-              ],
-            ),
-          ),
-        ),
-        title: const Text('Plan Your Trip '),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.of(context)
-              .push(MaterialPageRoute(builder: (context) => const AddPage()));
-        },
-        child: const Icon(Icons.add),
-      ),
-      body: Builder(
-        builder: (context) {
-          if (currentIndex == 1) {
-            return const WeatherPage();
-          }
-          if (currentIndex == 2) {
-            return WishList();
-          }
-          if (currentIndex == 0) {}
-          return BlocProvider(
+        body: BlocProvider(
             create: (context) => HomeCubit(ItemsRepository())..start(),
             child: BlocBuilder<HomeCubit, HomeState>(
               builder: (context, state) {
@@ -108,35 +72,14 @@ class _HomePageState extends State<HomePage> {
                   ],
                 );
               },
-            ),
-          );
-        },
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
-        showSelectedLabels: false,
-        currentIndex: currentIndex,
-        onTap: (newIndex) {
-          setState(() {
-            currentIndex = newIndex;
-          });
-        },
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.travel_explore),
-            label: 'Trips',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.sunny_snowing),
-            label: 'Weather',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.list_alt),
-            label: 'Wish List',
-          ),
-        ],
-      ),
-    );
+            )),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            Navigator.of(context)
+                .push(MaterialPageRoute(builder: (context) => const AddPage()));
+          },
+          child: const Icon(Icons.add),
+        ));
   }
 }
 
