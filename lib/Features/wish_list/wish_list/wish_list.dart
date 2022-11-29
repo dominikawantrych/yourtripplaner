@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:ionicons/ionicons.dart';
+
 import 'package:yourtripplaner/Features/add_wish/add_wish_trip_page.dart';
 import 'package:yourtripplaner/Features/wish_list/cubit/wish_list_cubit.dart';
 
@@ -56,11 +56,14 @@ class WishList extends StatelessWidget {
                             fit: BoxFit.cover,
                           ),
                         ),
-                        child: Text(wishModel.title, style: const TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white,
-                                ),),
+                        child: Text(
+                          wishModel.title,
+                          style: const TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
+                        ),
                       ),
                     ),
                   ],
@@ -73,7 +76,10 @@ class WishList extends StatelessWidget {
           Navigator.of(context).push(
               MaterialPageRoute(builder: (context) => const AddWishTrip()));
         },
-        child: const Icon(Icons.travel_explore),
+        child: const Icon(
+          Icons.travel_explore,
+          color: Color.fromARGB(255, 167, 209, 244),
+        ),
       ),
     );
   }

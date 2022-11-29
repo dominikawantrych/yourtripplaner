@@ -13,9 +13,6 @@ class HomePage extends StatelessWidget {
     Key? key,
   }) : super(key: key);
 
- 
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -71,10 +68,14 @@ class HomePage extends StatelessWidget {
             )),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
-            Navigator.of(context)
-                .push(MaterialPageRoute(builder: (context) => const AddPage()));
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => const AddPage(),
+              ),
+            );
           },
-          child: const Icon(Icons.add),
+          child: const Icon(Icons.add, color: Color.fromARGB(255, 167, 209, 244),),
+          
         ));
   }
 }

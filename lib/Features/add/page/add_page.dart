@@ -46,12 +46,12 @@ class _AddPageState extends State<AddPage> {
                       begin: Alignment.topLeft,
                       end: Alignment.bottomRight,
                       colors: <Color>[
-                        Color.fromARGB(255, 38, 132, 221),
-                        Color.fromARGB(255, 69, 156, 237),
-                        Color.fromARGB(255, 83, 163, 238),
-                        Color.fromARGB(255, 137, 185, 231),
-                        Color.fromARGB(255, 145, 181, 214),
-                        Color.fromARGB(255, 198, 219, 238),
+                        Color.fromARGB(255, 141, 193, 242),
+                        Color.fromARGB(255, 173, 211, 248),
+                        Color.fromARGB(255, 187, 217, 246),
+                        Color.fromARGB(255, 202, 226, 250),
+                        Color.fromARGB(255, 200, 222, 244),
+                        Color.fromARGB(255, 209, 223, 235),
                       ],
                     ),
                   ),
@@ -164,7 +164,6 @@ class AddPageBody extends StatelessWidget {
               onDateChanged(selectedDate);
             },
             child: Text(selectedDateFormatted ?? 'Choose trip date'),
-            
           ),
         ]);
   }
