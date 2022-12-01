@@ -74,8 +74,10 @@ class HomePage extends StatelessWidget {
               ),
             );
           },
-          child: const Icon(Icons.add, color: Color.fromARGB(255, 167, 209, 244),),
-          
+          backgroundColor: const Color.fromARGB(255, 150, 196, 233),
+          child: const Icon(
+            Icons.add,
+          ),
         ));
   }
 }

@@ -75,13 +75,11 @@ class _SearchWidget extends StatelessWidget {
             controller: _controller,
             decoration: const InputDecoration(
               focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.blue),
                 borderRadius: BorderRadius.all(
                   Radius.circular(10.0),
                 ),
-                borderSide: BorderSide(
-                  width: 5,
-                  color: Color.fromARGB(255, 173, 27, 27),
-                ),
+                
               ),
               label: Text('City'),
               fillColor: Colors.blue,
@@ -90,13 +88,17 @@ class _SearchWidget extends StatelessWidget {
           )),
           const SizedBox(width: 20),
           ElevatedButton(
+            
             onPressed: () {
               context
                   .read<WeatherCubit>()
                   .getWeatherModel(city: _controller.text);
             },
+            
             child: const Text('Get'),
+            
           ),
+
         ],
       ),
     );

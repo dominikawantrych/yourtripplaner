@@ -5,17 +5,18 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
 import 'package:yourtripplaner/Features/models/wish_model.dart';
+import 'package:yourtripplaner/repositories/wish_repository.dart';
 
 part 'wish_list_state.dart';
 
 class WishListCubit extends Cubit<WishListState> {
-  WishListCubit()
+  WishListCubit(this._wishRepository)
       : super(const WishListState(
           documents: [],
           errorMessage: '',
           isloading: false,
         ));
-
+  final WishRepository _wishRepository;
   StreamSubscription? _streamSubscription;
 
   Future<void> start() async {
@@ -25,20 +26,12 @@ class WishListCubit extends Cubit<WishListState> {
       isloading: true,
     ));
 
-    _streamSubscription = FirebaseFirestore.instance
-        .collection('wishList')
-        .snapshots()
+    _streamSubscription = _wishRepository.getWishStream()
         .listen((data) {
-      final wishModels = data.docs.map((doc) {
-        return WishModel(
-          id: doc.id,
-          imageURL: doc['imageURL'],
-          title: doc['title'],
-        );
-      }).toList();
+      
       emit(
         WishListState(
-          documents: wishModels,
+          documents: data,
           isloading: false,
           errorMessage: '',
         ),
@@ -57,12 +50,7 @@ class WishListCubit extends Cubit<WishListState> {
 
   Future<void> add({required String imageURL, title}) async {
     try {
-      await FirebaseFirestore.instance.collection('wishList').add(
-        {
-          'imageURL': imageURL,
-          'title' : title,
-        },
-      );
+      await _wishRepository.add(imageURL: imageURL, title: title);
       emit(WishListState(
         documents: state.documents,
         errorMessage: '',
@@ -79,10 +67,7 @@ class WishListCubit extends Cubit<WishListState> {
 
   Future<void> delete({required String documentID}) async {
     try {
-      await FirebaseFirestore.instance
-          .collection('wishList')
-          .doc(documentID)
-          .delete();
+     _wishRepository.delete(documentID: documentID);
     } catch (error) {
       emit(
         const WishListState(
