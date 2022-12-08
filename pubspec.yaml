@@ -45,6 +45,7 @@ dependencies:
   ionicons: ^0.2.1
   
   flutter_svg: ^0.22.0
+  flutterfire_ui: ^0.2.0+2
  
 
 dev_dependencies:

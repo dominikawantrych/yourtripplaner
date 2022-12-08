@@ -3,16 +3,16 @@ import 'package:yourtripplaner/Features/home/page/home_page.dart';
 import 'package:yourtripplaner/Features/weather/pages/weather_page.dart';
 import 'package:yourtripplaner/Features/wish_list/wish_list/wish_list.dart';
 
-class WelcomePage extends StatefulWidget {
-  const WelcomePage({
+class LoginPage extends StatefulWidget {
+  const LoginPage({
     Key? key,
   }) : super(key: key);
 
   @override
-  State<WelcomePage> createState() => _WelcomePageState();
+  State<LoginPage> createState() => _LoginPageState();
 }
 
-class _WelcomePageState extends State<WelcomePage> {
+class _LoginPageState extends State<LoginPage> {
   var currentIndex = 0;
 
   @override
@@ -63,19 +63,31 @@ class _WelcomePageState extends State<WelcomePage> {
         },
         items: const [
           BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Welcome',
+            icon: Icon(
+              Icons.person,
+              color: Color.fromARGB(255, 118, 178, 233),
+            ),
+            label: 'Home',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.travel_explore),
+            icon: Icon(
+              Icons.travel_explore,
+              color: Color.fromARGB(255, 118, 178, 233),
+            ),
             label: 'Trips',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.sunny_snowing),
+            icon: Icon(
+              Icons.sunny_snowing,
+              color: Color.fromARGB(255, 118, 178, 233),
+            ),
             label: 'Weather',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.list_alt),
+            icon: Icon(
+              Icons.favorite,
+              color: Color.fromARGB(255, 118, 178, 233),
+            ),
             label: 'Wish List',
           ),
         ],

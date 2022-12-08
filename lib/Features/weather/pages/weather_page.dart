@@ -29,12 +29,9 @@ class WeatherPage extends StatelessWidget {
         }, builder: (context, state) {
           final weatherModel = state.model;
           return Scaffold(
-            extendBodyBehindAppBar: true,
-            appBar: AppBar(
-              title: const Text(''),
-              backgroundColor: Colors.transparent,
-              elevation: 0,
-            ),
+            
+            
+            
             body: Center(
               child: Builder(builder: (context) {
                 if (state.status == Status.loading) {
@@ -79,26 +76,26 @@ class _SearchWidget extends StatelessWidget {
                 borderRadius: BorderRadius.all(
                   Radius.circular(10.0),
                 ),
-                
               ),
               label: Text('City'),
-              fillColor: Colors.blue,
+              fillColor: Color.fromARGB(255, 118, 178, 233),
               hintText: 'London',
             ),
           )),
           const SizedBox(width: 20),
           ElevatedButton(
-            
             onPressed: () {
               context
                   .read<WeatherCubit>()
                   .getWeatherModel(city: _controller.text);
             },
-            
+            style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.all(
+                const Color.fromARGB(255, 118, 178, 233),
+              ),
+            ),
             child: const Text('Get'),
-            
           ),
-
         ],
       ),
     );

@@ -30,11 +30,11 @@ class DetailsPage extends StatelessWidget {
                     end: Alignment.bottomRight,
                     colors: <Color>[
                       Color.fromARGB(255, 118, 178, 233),
-                Color.fromARGB(255, 173, 211, 248),
-                Color.fromARGB(255, 187, 217, 246),
-                Color.fromARGB(255, 202, 226, 250),
-                Color.fromARGB(255, 216, 231, 246),
-                Color.fromARGB(255, 226, 234, 241),
+                      Color.fromARGB(255, 173, 211, 248),
+                      Color.fromARGB(255, 187, 217, 246),
+                      Color.fromARGB(255, 202, 226, 250),
+                      Color.fromARGB(255, 216, 231, 246),
+                      Color.fromARGB(255, 226, 234, 241),
                     ],
                   ),
                 ),
@@ -44,7 +44,7 @@ class DetailsPage extends StatelessWidget {
                   bottom: Radius.circular(10),
                 ),
               ),
-              title: const Text('TO DO'),
+              title: const Text('Before the Trip'),
             ),
             body: BlocProvider(
               create: (context) => DetailsCubit(DetailsRepository())..start(),
@@ -108,11 +108,8 @@ class DetailsPage extends StatelessWidget {
                                   Ionicons.today_outline,
                                   color: Colors.black38,
                                 ),
-                                
                               ),
-                              
                             ),
-                
                           ),
                         ],
                       );

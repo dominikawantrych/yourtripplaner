@@ -1,7 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:yourtripplaner/Features/login/login_page.dart';
 
-import 'package:yourtripplaner/Features/welcome/welcome_page.dart';
 import 'firebase_options.dart';
 import 'package:flutter/material.dart';
 
@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
         textTheme: GoogleFonts.montserratTextTheme(),
        
       ),
-      home: const WelcomePage(),
+      home: const LoginPage(),
     );
   }
 }

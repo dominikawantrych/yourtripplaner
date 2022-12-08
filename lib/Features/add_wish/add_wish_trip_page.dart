@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:yourtripplaner/Features/add_wish/cubit/add_wish_trip_cubit.dart';
+import 'package:yourtripplaner/repositories/wish_repository.dart';
 
 class AddWishTrip extends StatefulWidget {
   const AddWishTrip({Key? key}) : super(key: key);
@@ -17,7 +18,7 @@ class _AddWishTripState extends State<AddWishTrip> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => AddWishTripCubit(),
+      create: (context) => AddWishTripCubit(WishRepository()),
       child: BlocBuilder<AddWishTripCubit, AddWishTripState>(
         builder: (context, state) {
           if (state.saved) {
@@ -39,12 +40,12 @@ class _AddWishTripState extends State<AddWishTrip> {
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
                     colors: <Color>[
-                     Color.fromARGB(255, 118, 178, 233),
-                Color.fromARGB(255, 173, 211, 248),
-                Color.fromARGB(255, 187, 217, 246),
-                Color.fromARGB(255, 202, 226, 250),
-                Color.fromARGB(255, 216, 231, 246),
-                Color.fromARGB(255, 226, 234, 241),
+                      Color.fromARGB(255, 118, 178, 233),
+                      Color.fromARGB(255, 173, 211, 248),
+                      Color.fromARGB(255, 187, 217, 246),
+                      Color.fromARGB(255, 202, 226, 250),
+                      Color.fromARGB(255, 216, 231, 246),
+                      Color.fromARGB(255, 226, 234, 241),
                     ],
                   ),
                 ),
