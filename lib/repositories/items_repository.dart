@@ -1,9 +1,16 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:yourtripplaner/Features/models/item_model.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class ItemsRepository {
   Stream<List<ItemModel>> getItemsStream() {
+    final userID = FirebaseAuth.instance.currentUser?.uid;
+    if (userID == null) {
+      throw Exception('User is not logged in');
+    }
     return FirebaseFirestore.instance
+        .collection('users')
+        .doc(userID)
         .collection('trip')
         .orderBy('date')
         .snapshots()
@@ -22,16 +29,35 @@ class ItemsRepository {
   }
 
   Future<void> delete({required String id}) {
-    return FirebaseFirestore.instance.collection('trip').doc(id).delete();
+    final userID = FirebaseAuth.instance.currentUser?.uid;
+    if (userID == null) {
+      throw Exception('User is not logged in');
+    }
+    return FirebaseFirestore.instance
+        .collection('users')
+        .doc(userID)
+        .collection('trip')
+        .doc(id)
+        .delete();
   }
-   Future<ItemModel> get({required String id}) async {
-    final doc = await FirebaseFirestore.instance.collection('trip').doc(id).get();
+
+  Future<ItemModel> get({required String id}) async {
+    final userID = FirebaseAuth.instance.currentUser?.uid;
+    if (userID == null) {
+      throw Exception('User is not logged in');
+    }
+    final doc = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(userID)
+        .collection('trip')
+        .doc(id)
+        .get();
     return ItemModel(
-            id: doc.id,
-            title: doc['title'],
-            imageURL: doc['imageURL'],
-            date: (doc['date'] as Timestamp).toDate(),
-          );
+      id: doc.id,
+      title: doc['title'],
+      imageURL: doc['imageURL'],
+      date: (doc['date'] as Timestamp).toDate(),
+    );
   }
 
   Future<void> add(
@@ -39,7 +65,15 @@ class ItemsRepository {
     String imageURL,
     DateTime date,
   ) async {
-    await FirebaseFirestore.instance.collection('trip').add(
+    final userID = FirebaseAuth.instance.currentUser?.uid;
+    if (userID == null) {
+      throw Exception('User is not logged in');
+    }
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(userID)
+        .collection('trip')
+        .add(
       {
         'title': title,
         'imageURL': imageURL,
