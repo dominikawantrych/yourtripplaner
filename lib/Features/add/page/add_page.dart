@@ -22,7 +22,7 @@ class _AddPageState extends State<AddPage> {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => AddCubit(ItemsRepository()),
-      child: BlocListener<AddCubit, AddState>(
+      child: BlocConsumer<AddCubit, AddState>(
         listener: (context, state) {
           if (state.saved) {
             Navigator.of(context).pop();
@@ -36,72 +36,69 @@ class _AddPageState extends State<AddPage> {
             );
           }
         },
-        child: BlocBuilder<AddCubit, AddState>(
-          builder: (context, state) {
-            return Scaffold(
-              appBar: AppBar(
-                flexibleSpace: Container(
-                  decoration: const BoxDecoration(
-                    gradient: LinearGradient(
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                      colors: <Color>[
-                        Color.fromARGB(255, 118, 178, 233),
-                        Color.fromARGB(255, 173, 211, 248),
-                        Color.fromARGB(255, 187, 217, 246),
-                        Color.fromARGB(255, 202, 226, 250),
-                        Color.fromARGB(255, 216, 231, 246),
-                        Color.fromARGB(255, 226, 234, 241),
-                      ],
-                    ),
+        builder: (context, state) {
+          return Scaffold(
+            appBar: AppBar(
+              flexibleSpace: Container(
+                decoration: const BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    colors: <Color>[
+                      Color.fromARGB(255, 118, 178, 233),
+                      Color.fromARGB(255, 173, 211, 248),
+                      Color.fromARGB(255, 187, 217, 246),
+                      Color.fromARGB(255, 202, 226, 250),
+                      Color.fromARGB(255, 216, 231, 246),
+                      Color.fromARGB(255, 226, 234, 241),
+                    ],
                   ),
                 ),
-                automaticallyImplyLeading: false,
-                shape: const RoundedRectangleBorder(
-                  borderRadius: BorderRadius.vertical(
-                    bottom: Radius.circular(10),
-                  ),
+              ),
+              automaticallyImplyLeading: false,
+              shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.vertical(
+                  bottom: Radius.circular(10),
                 ),
-                title: const Text('Add upcoming trip'),
-                actions: [
-                  IconButton(
-                    onPressed:
-                        _imageURL == null || _title == null || _date == null
-                            ? null
-                            : () {
-                                context.read<AddCubit>().add(
-                                      _title!,
-                                      _imageURL!,
-                                      _date!,
-                                    );
-                              },
-                    icon: const Icon(Icons.check),
-                  ),
-                ],
               ),
-              body: AddPageBody(
-                onTitleChanged: (newValue) {
-                  setState(() {
-                    _title = newValue;
-                  });
-                },
-                onImageUrlChanged: (newValue) {
-                  setState(() {
-                    _imageURL = newValue;
-                  });
-                },
-                onDateChanged: (newValue) {
-                  setState(() {
-                    _date = newValue;
-                  });
-                },
-                selectedDateFormatted: _date == null
-                    ? null
-                    : DateFormat.yMMMMEEEEd().format(_date!),
-              ),
-            );
-          },
-        ),
+              title: const Text('Add upcoming trip'),
+              actions: [
+                IconButton(
+                  onPressed:
+                      _imageURL == null || _title == null || _date == null
+                          ? null
+                          : () {
+                              context.read<AddCubit>().add(
+                                    _title!,
+                                    _imageURL!,
+                                    _date!,
+                                  );
+                            },
+                  icon: const Icon(Icons.check),
+                ),
+              ],
+            ),
+            body: AddPageBody(
+              onTitleChanged: (newValue) {
+                setState(() {
+                  _title = newValue;
+                });
+              },
+              onImageUrlChanged: (newValue) {
+                setState(() {
+                  _imageURL = newValue;
+                });
+              },
+              onDateChanged: (newValue) {
+                setState(() {
+                  _date = newValue;
+                });
+              },
+              selectedDateFormatted:
+                  _date == null ? null : DateFormat.yMMMMEEEEd().format(_date!),
+            ),
+          );
+        },
       ),
     );
   }
