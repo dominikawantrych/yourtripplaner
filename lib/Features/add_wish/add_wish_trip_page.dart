@@ -19,67 +19,72 @@ class _AddWishTripState extends State<AddWishTrip> {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => AddWishTripCubit(WishRepository()),
-      child: BlocBuilder<AddWishTripCubit, AddWishTripState>(
-        builder: (context, state) {
+      child: BlocListener<AddWishTripCubit, AddWishTripState>(
+        listener: (context, state) {
           if (state.saved) {
-            Navigator.of(context).pop();
-          }
-          if (state.errorMessage.isNotEmpty) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(state.errorMessage),
-                backgroundColor: Colors.red,
-              ),
-            );
-          }
-          return Scaffold(
-            appBar: AppBar(
-              flexibleSpace: Container(
-                decoration: const BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                    colors: <Color>[
-                      Color.fromARGB(255, 118, 178, 233),
-                      Color.fromARGB(255, 173, 211, 248),
-                      Color.fromARGB(255, 187, 217, 246),
-                      Color.fromARGB(255, 202, 226, 250),
-                      Color.fromARGB(255, 216, 231, 246),
-                      Color.fromARGB(255, 226, 234, 241),
-                    ],
+              Navigator.of(context).pop();
+            }
+            
+        },
+        child: BlocBuilder<AddWishTripCubit, AddWishTripState>(
+          builder: (context, state) {
+            if (state.errorMessage.isNotEmpty) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(state.errorMessage),
+                  backgroundColor: Colors.red,
+                ),
+              );
+            }
+            return Scaffold(
+              appBar: AppBar(
+                flexibleSpace: Container(
+                  decoration: const BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                      colors: <Color>[
+                        Color.fromARGB(255, 118, 178, 233),
+                        Color.fromARGB(255, 173, 211, 248),
+                        Color.fromARGB(255, 187, 217, 246),
+                        Color.fromARGB(255, 202, 226, 250),
+                        Color.fromARGB(255, 216, 231, 246),
+                        Color.fromARGB(255, 226, 234, 241),
+                      ],
+                    ),
                   ),
                 ),
+                automaticallyImplyLeading: false,
+                title: const Text('Add to Wish List'),
+                actions: [
+                  IconButton(
+                    onPressed: imageURL == null || title == null
+                        ? null
+                        : () {
+                            context.read<AddWishTripCubit>().add(
+                                  title!,
+                                  imageURL!,
+                                );
+                          },
+                    icon: const Icon(Icons.check),
+                  ),
+                ],
               ),
-              automaticallyImplyLeading: false,
-              title: const Text('Add to Wish List'),
-              actions: [
-                IconButton(
-                  onPressed: imageURL == null || title == null
-                      ? null
-                      : () {
-                          context.read<AddWishTripCubit>().add(
-                                title!,
-                                imageURL!,
-                              );
-                        },
-                  icon: const Icon(Icons.check),
-                ),
-              ],
-            ),
-            body: AddWishTripBody(
-              onTitleChanged: (newValue) {
-                setState(() {
-                  title = newValue;
-                });
-              },
-              onImageUrlChanged: (newValue) {
-                setState(() {
-                  imageURL = newValue;
-                });
-              },
-            ),
-          );
-        },
+              body: AddWishTripBody(
+                onTitleChanged: (newValue) {
+                  setState(() {
+                    title = newValue;
+                  });
+                },
+                onImageUrlChanged: (newValue) {
+                  setState(() {
+                    imageURL = newValue;
+                  });
+                },
+              ),
+            );
+          },
+        ),
       ),
     );
   }
