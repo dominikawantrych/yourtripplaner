@@ -57,29 +57,26 @@ class _HomePageState extends State<HomePage> {
           ),
         ],
       ),
-      body: Builder(builder: (context) {
-        if (currentIndex == 2) {
-          return WishList();
-        }
-        if (currentIndex == 1) {
-          return const WeatherPage();
-        }
-        if (currentIndex == 0) {
-          return const HomePage();
-        }
+      body: BlocProvider(
+        create: (context) => HomeCubit(ItemsRepository())..start(),
+        child: BlocBuilder<HomeCubit, HomeState>(
+          builder: (context, state) {
+            final itemModels = state.items;
+            if (itemModels.isEmpty) {
+              return const SizedBox.shrink();
+            }
+            if (state.loadingErrorOccured) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            }
 
-        return BlocProvider(
-          create: (context) => HomeCubit(ItemsRepository())..start(),
-          child: BlocBuilder<HomeCubit, HomeState>(
-            builder: (context, state) {
-              final itemModels = state.items;
-              if (itemModels.isEmpty) {
-                return const SizedBox.shrink();
+            return Builder(builder: (context) {
+              if (currentIndex == 2) {
+                return WishList();
               }
-              if (state.loadingErrorOccured) {
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
+              if (currentIndex == 1) {
+                return const WeatherPage();
               }
 
               return ListView(
@@ -116,10 +113,23 @@ class _HomePageState extends State<HomePage> {
                   ],
                 ],
               );
-            },
-          ),
-        );
-      }),
+            });
+          },
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => const AddPage(),
+            ),
+          );
+        },
+        backgroundColor: const Color.fromARGB(255, 150, 196, 233),
+        child: const Icon(
+          Icons.add,
+        ),
+      ),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         showSelectedLabels: false,
@@ -130,13 +140,6 @@ class _HomePageState extends State<HomePage> {
           });
         },
         items: const [
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.person,
-              color: Color.fromARGB(255, 118, 178, 233),
-            ),
-            label: 'Home',
-          ),
           BottomNavigationBarItem(
             icon: Icon(
               Icons.travel_explore,
@@ -159,19 +162,6 @@ class _HomePageState extends State<HomePage> {
             label: 'Wish List',
           ),
         ],
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (context) => const AddPage(),
-            ),
-          );
-        },
-        backgroundColor: const Color.fromARGB(255, 150, 196, 233),
-        child: const Icon(
-          Icons.add,
-        ),
       ),
     );
   }

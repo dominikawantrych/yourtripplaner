@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutterfire_ui/auth.dart';
 import 'package:yourtripplaner/Features/home/page/home_page.dart';
 
-
 class AuthGate extends StatelessWidget {
   const AuthGate({Key? key}) : super(key: key);
 

@@ -21,6 +21,6 @@ class AddWishTripCubit extends Cubit<AddWishTripState> {
     } catch (error) {
       emit(AddWishTripState(errorMessage: error.toString()));
     }
-    ;
+    
   }
 }
