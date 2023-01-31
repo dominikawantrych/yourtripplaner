@@ -1,19 +1,16 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+
 
 import 'package:yourtripplaner/Features/models/details_model.dart';
+import 'package:yourtripplaner/data/remote_data_sources/details_data_source.dart';
 
 class DetailsRepository {
+  DetailsRepository(this.detailsRemoteDataSource,);
+
+  final DetailsRemoteDataSource detailsRemoteDataSource;
+
   Stream<List<DetailsModel>> getDetailsStream() {
-    final userID = FirebaseAuth.instance.currentUser?.uid;
-    if (userID == null) {
-      throw Exception('User is not logged in');
-    }
-    return FirebaseFirestore.instance
-        .collection('users')
-        .doc(userID)
-        .collection('todo')
-        .snapshots()
+    
+    return detailsRemoteDataSource.getDetailsStream()
         .map((querySnapshot) {
       return querySnapshot.docs.map((docs) {
         return DetailsModel(id: docs.id, title: docs['title']);
@@ -22,36 +19,15 @@ class DetailsRepository {
   }
 
   Future<void> delete({required String id}) {
-    final userID = FirebaseAuth.instance.currentUser?.uid;
-    if (userID == null) {
-      throw Exception('User is not logged in');
-    }
-    return FirebaseFirestore.instance.collection('users')
-        .doc(userID).collection('todo').doc(id).delete();
+    
+    return detailsRemoteDataSource.delete(id: id);
   }
 
-  Future<DetailsModel> get({required String id}) async {
-    final userID = FirebaseAuth.instance.currentUser?.uid;
-    if (userID == null) {
-      throw Exception('User is not logged in');
-    }
-    final doc =
-        await FirebaseFirestore.instance.collection('users')
-        .doc(userID).collection('todo').doc(id).get();
-    return DetailsModel(
-      id: doc.id,
-      title: doc['title'],
-    );
-  }
+  
 
   Future<void> add(
     String title,
-  ) async {
-    final userID = FirebaseAuth.instance.currentUser?.uid;
-    if (userID == null) {
-      throw Exception('User is not logged in');
-    }
-    await FirebaseFirestore.instance.collection('users')
-        .doc(userID).collection('todo').add({'title': title});
+  )  {
+    return detailsRemoteDataSource.add(title);
   }
 }

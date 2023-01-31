@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:yourtripplaner/Features/details/cubit/details_cubit.dart';
 import 'package:yourtripplaner/app/core/enums.dart';
+import 'package:yourtripplaner/data/remote_data_sources/details_data_source.dart';
 import 'package:yourtripplaner/repositories/details_repository.dart';
 
 class DetailsPage extends StatelessWidget {
@@ -18,7 +19,7 @@ class DetailsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => DetailsCubit(DetailsRepository()),
+      create: (context) => DetailsCubit(DetailsRepository(DetailsRemoteDataSource())),
       child: BlocBuilder<DetailsCubit, DetailsState>(
         builder: (context, state) {
           return Scaffold(
@@ -47,7 +48,7 @@ class DetailsPage extends StatelessWidget {
               title: const Text('Before the Trip'),
             ),
             body: BlocProvider(
-              create: (context) => DetailsCubit(DetailsRepository())..start(),
+              create: (context) => DetailsCubit(DetailsRepository(DetailsRemoteDataSource()))..start(),
               child: BlocBuilder<DetailsCubit, DetailsState>(
                 builder: (context, state) {
                   switch (state.status) {
@@ -83,32 +84,48 @@ class DetailsPage extends StatelessWidget {
                           ],
                           Padding(
                             padding: const EdgeInsets.all(8.0),
-                            child: TextField(
-                              controller: controller,
-                              style: GoogleFonts.montserrat(),
-                              decoration: const InputDecoration(
-                                enabledBorder: OutlineInputBorder(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(15.0)),
-                                  borderSide: BorderSide(
-                                      width: 2,
-                                      color:
-                                          Color.fromARGB(233, 182, 217, 240)),
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  child: TextField(
+                                    controller: controller,
+                                    style: GoogleFonts.montserrat(),
+                                    decoration: const InputDecoration(
+                                      enabledBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(15.0)),
+                                        borderSide: BorderSide(
+                                            width: 2,
+                                            color: Color.fromARGB(
+                                                233, 182, 217, 240)),
+                                      ),
+                                      focusedBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(10.0)),
+                                        borderSide: BorderSide(
+                                            width: 2,
+                                            color: Color.fromARGB(
+                                                233, 182, 217, 240)),
+                                      ),
+                                      hintText: 'Book Flights',
+                                      prefixIcon: Icon(
+                                        Ionicons.today_outline,
+                                        color: Colors.black38,
+                                      ),
+                                    ),
+                                  ),
                                 ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(10.0)),
-                                  borderSide: BorderSide(
-                                      width: 2,
-                                      color:
-                                          Color.fromARGB(233, 182, 217, 240)),
+                                IconButton(
+                                  onPressed: () {
+                                    context
+                                        .read<DetailsCubit>()
+                                        .add(title: controller.text);
+                                    controller.clear();
+                                  },
+                                  icon: const Icon(Icons.add,
+                                      color: Colors.black38),
                                 ),
-                                hintText: 'Book Flights',
-                                prefixIcon: Icon(
-                                  Ionicons.today_outline,
-                                  color: Colors.black38,
-                                ),
-                              ),
+                              ],
                             ),
                           ),
                         ],

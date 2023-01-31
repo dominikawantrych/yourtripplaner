@@ -50,6 +50,23 @@ class DetailsCubit extends Cubit<DetailsState> {
       });
   }
 
+  Future<void> add({required String title}) async {
+    try {
+      await _detailsRepository.add(title);
+      emit(DetailsState(
+        docs: state.docs,
+        errorMessage: '',
+        status: Status.success,
+      ));
+    } catch (error) {
+      emit(DetailsState(
+        errorMessage: error.toString(),
+        docs: [],
+        status: Status.error,
+      ));
+    }
+  }
+
   Future<void> remove({required String documentID}) async {
     try {
       await _detailsRepository.delete(id: documentID);
@@ -61,7 +78,6 @@ class DetailsCubit extends Cubit<DetailsState> {
     }
   }
 
-  
   @override
   Future<void> close() {
     _streamSubscription?.cancel();

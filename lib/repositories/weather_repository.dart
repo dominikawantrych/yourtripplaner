@@ -1,5 +1,3 @@
-
-
 import 'package:yourtripplaner/Features/models/weather_model.dart';
 import 'package:yourtripplaner/data/remote_data_sources/weather_remote_data_source.dart';
 
@@ -18,8 +16,7 @@ class WeatherRepository {
     if (json == null) {
       return null;
     }
-
+ 
     return WeatherModel.fromJson(json);
-   
   }
 }
