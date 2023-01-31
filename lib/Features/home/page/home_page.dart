@@ -9,6 +9,7 @@ import 'package:yourtripplaner/Features/models/item_model.dart';
 import 'package:yourtripplaner/Features/weather/pages/weather_page.dart';
 import 'package:yourtripplaner/Features/wish_list/wish_list/wish_list.dart';
 import 'package:yourtripplaner/auth/pages/user_profile.dart';
+import 'package:yourtripplaner/data/remote_data_sources/items_remote_data_source.dart';
 import 'package:yourtripplaner/repositories/items_repository.dart';
 
 class HomePage extends StatefulWidget {
@@ -58,7 +59,7 @@ class _HomePageState extends State<HomePage> {
         ],
       ),
       body: BlocProvider(
-        create: (context) => HomeCubit(ItemsRepository())..start(),
+        create: (context) => HomeCubit(ItemsRepository(ItemsRemoteDataSource()))..start(),
         child: BlocBuilder<HomeCubit, HomeState>(
           builder: (context, state) {
             final itemModels = state.items;

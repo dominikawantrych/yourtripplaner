@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:yourtripplaner/Features/add/cubit/add_cubit.dart';
+import 'package:yourtripplaner/data/remote_data_sources/items_remote_data_source.dart';
 import 'package:yourtripplaner/repositories/items_repository.dart';
 
 class AddPage extends StatefulWidget {
@@ -21,7 +22,7 @@ class _AddPageState extends State<AddPage> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => AddCubit(ItemsRepository()),
+      create: (context) => AddCubit(ItemsRepository(ItemsRemoteDataSource())),
       child: BlocConsumer<AddCubit, AddState>(
         listener: (context, state) {
           if (state.saved) {
