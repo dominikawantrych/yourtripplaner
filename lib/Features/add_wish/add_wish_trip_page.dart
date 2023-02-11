@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:yourtripplaner/Features/add_wish/cubit/add_wish_trip_cubit.dart';
+import 'package:yourtripplaner/data/remote_data_sources/wish_remote_data_source.dart';
 import 'package:yourtripplaner/repositories/wish_repository.dart';
 
 class AddWishTrip extends StatefulWidget {
@@ -18,7 +19,7 @@ class _AddWishTripState extends State<AddWishTrip> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => AddWishTripCubit(WishRepository()),
+      create: (context) => AddWishTripCubit(WishRepository(WishRemoteDataSource())),
       child: BlocConsumer<AddWishTripCubit, AddWishTripState>(
         listener: (context, state) {
         if (state.saved) {

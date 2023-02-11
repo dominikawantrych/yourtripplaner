@@ -5,22 +5,21 @@ import 'package:firebase_auth/firebase_auth.dart';
 class ItemsRemoteDataSource {
   Stream<QuerySnapshot<Map<String, dynamic>>> getItemsStream() {
     try {
-    final userID = FirebaseAuth.instance.currentUser?.uid;
-    if (userID == null) {
-      throw Exception('User is not logged in');
+      final userID = FirebaseAuth.instance.currentUser?.uid;
+      if (userID == null) {
+        throw Exception('User is not logged in');
+      }
+      final stream = FirebaseFirestore.instance
+          .collection('users')
+          .doc(userID)
+          .collection('trip')
+          .orderBy('date')
+          .snapshots();
+      return stream;
+    } catch (error) {
+      throw Exception(error.toString());
     }
-    final stream = FirebaseFirestore.instance
-        .collection('users')
-        .doc(userID)
-        .collection('trip')
-        .orderBy('date')
-        .snapshots();
-        return stream;
-  } catch (error) {
-    throw Exception(error.toString());
-  }}
-        
-  
+  }
 
   Future<void> delete({required String id}) {
     final userID = FirebaseAuth.instance.currentUser?.uid;
@@ -34,8 +33,6 @@ class ItemsRemoteDataSource {
         .doc(id)
         .delete();
   }
-
-  
 
   Future<void> add(
     String title,

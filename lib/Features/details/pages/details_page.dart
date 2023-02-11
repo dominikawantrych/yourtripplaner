@@ -19,7 +19,8 @@ class DetailsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => DetailsCubit(DetailsRepository(DetailsRemoteDataSource())),
+      create: (context) =>
+          DetailsCubit(DetailsRepository(DetailsRemoteDataSource())),
       child: BlocBuilder<DetailsCubit, DetailsState>(
         builder: (context, state) {
           return Scaffold(
@@ -48,7 +49,9 @@ class DetailsPage extends StatelessWidget {
               title: const Text('Before the Trip'),
             ),
             body: BlocProvider(
-              create: (context) => DetailsCubit(DetailsRepository(DetailsRemoteDataSource()))..start(),
+              create: (context) =>
+                  DetailsCubit(DetailsRepository(DetailsRemoteDataSource()))
+                    ..start(),
               child: BlocBuilder<DetailsCubit, DetailsState>(
                 builder: (context, state) {
                   switch (state.status) {

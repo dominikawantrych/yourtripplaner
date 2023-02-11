@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:yourtripplaner/Features/add_wish/add_wish_trip_page.dart';
 import 'package:yourtripplaner/Features/wish_list/cubit/wish_list_cubit.dart';
+import 'package:yourtripplaner/data/remote_data_sources/wish_remote_data_source.dart';
 import 'package:yourtripplaner/repositories/wish_repository.dart';
 
 class WishList extends StatelessWidget {
@@ -15,7 +16,8 @@ class WishList extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: BlocProvider(
-        create: (context) => WishListCubit(WishRepository())..start(),
+        create: (context) =>
+            WishListCubit(WishRepository(WishRemoteDataSource()))..start(),
         child: BlocBuilder<WishListCubit, WishListState>(
           builder: (context, state) {
             final wishModels = state.documents;
@@ -79,16 +81,12 @@ class WishList extends StatelessWidget {
             MaterialPageRoute(
               builder: (context) => const AddWishTrip(),
             ),
-            
           );
-          
         },
         backgroundColor: const Color.fromARGB(255, 150, 196, 233),
-        
         child: const Icon(
           Icons.add,
         ),
-        
       ),
     );
   }

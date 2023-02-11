@@ -13,7 +13,7 @@ class DetailsRepository {
     return detailsRemoteDataSource.getDetailsStream()
         .map((querySnapshot) {
       return querySnapshot.docs.map((docs) {
-        return DetailsModel(id: docs.id, title: docs['title']);
+        return DetailsModel(id: docs.id, title: docs['title'],  );
       }).toList();
     });
   }
