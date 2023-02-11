@@ -1,17 +1,18 @@
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:intl/intl.dart';
 
-class ItemModel {
-  ItemModel({
-    required this.id,
-    required this.title,
-    required this.imageURL,
-    required this.date,
-  });
-  final String id;
+part 'item_model.freezed.dart';
 
-  final String title;
-  final String imageURL;
-  final DateTime date;
+@freezed
+class ItemModel  with _$ItemModel {
+  const ItemModel._();
+  factory ItemModel({
+    required String id,
+    required String title,
+    required  String imageURL,
+    required DateTime date,
+  }) = _ItemModel;
+  
 
   String daysLeft() {
     return date.difference(DateTime.now()).inDays.toString();
