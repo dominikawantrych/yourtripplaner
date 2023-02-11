@@ -1,11 +1,12 @@
-class WishModel {
-  WishModel({
-    required this.id,
-    required this.imageURL,
-    required this.title,
-  });
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-  final String id;
-  final String imageURL;
-  final String title;
+part 'wish_model.freezed.dart';
+
+@freezed
+class WishModel with _$WishModel {
+  factory WishModel({
+    required String id,
+    required String imageURL,
+    required String title,
+  }) = _WishModel;
 }
